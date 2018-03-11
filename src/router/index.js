@@ -5,19 +5,23 @@ import manage from '../components/manage/index.vue'
 import login from '../components/login/index.vue'
 import userList from '../components/manage/user/userList.vue'
 import addUser from '../components/manage/user/addUser.vue'
-import deviceList from '../components/manage/device/deviceList.vue'
-import deviceGroup from '../components/manage/device/deviceGroup.vue'
 import dayCheckDone from '../components/manage/check/day-check/dayCheckDone.vue'
 import dayCheckWill from '../components/manage/check/day-check/dayCheckWill.vue'
 import professCheckDone from '../components/manage/check/profess-check/professCheckDone.vue'
 import professCheckWill from '../components/manage/check/profess-check/professCheckWill.vue'
 import precisionCheckDone from '../components/manage/check/precision-check/precisionCheckDone.vue'
 import precisionCheckWill from '../components/manage/check/precision-check/precisionCheckWill.vue'
-import account from '../components/manage/account/account.vue'
+import account from '../components/manage/account/index.vue'
 import dayCycle from '../components/manage/cycle/dayCycle.vue'
 import professCycle from '../components/manage/cycle/professCycle.vue'
 import precisionCycle from '../components/manage/cycle/precisionCycle.vue'
 import notice from '../components/manage/notice/notice.vue'
+
+import workIndex from '../components/manage/work/work-index/index.vue'
+import workList from '../components/manage/work/work-list/index.vue'
+import deviceIndex from '../components/manage/device/device-index/index.vue'
+import deviceList from '../components/manage/device/device-list/index.vue'
+import deviceAdd from '../components/manage/device/device-add/index.vue'
 
 Vue.use(Router)
 
@@ -27,136 +31,41 @@ const router = new Router({
     {
       path: '/',
       component: manage,
+      redirect: '/home',
       children: [
         // 首页
         {
-          path: '/manage',
+          path: '/home',
           name: 'home',
           component: home
         },
         // 日常点检
         {
-          path: '/manage/day-check/done',
-          name: 'dayCheckDone',
-          component: dayCheckDone,
-          meta: [
-            {
-              name: '日常点检',
-              url: ''
-            },
-            {
-              name: '已完成',
-              url: ''
-            }
-          ]
-        },
-        {
-          path: '/manage/day-check/will',
-          name: 'dayCheckWill',
-          component: dayCheckWill,
-          meta: [
-            {
-              name: '日常点检',
-              url: ''
-            },
-            {
-              name: '未完成',
-              url: ''
-            }
-          ]
-        },
-        // 专业点检
-        {
-          path: '/manage/profess-check/done',
-          name: 'professCheckDone',
-          component: professCheckDone,
-          meta: [
-            {
-              name: '专业点检',
-              url: ''
-            },
-            {
-              name: '已完成',
-              url: ''
-            }
-          ]
-        },
-        {
-          path: '/manage/profess-check/will',
-          name: 'professCheckWill',
-          component: professCheckWill,
-          meta: [
-            {
-              name: '专业点检',
-              url: ''
-            },
-            {
-              name: '未完成',
-              url: ''
-            }
-          ]
-        },
-        // 精密点检
-        {
-          path: '/manage/precision-check/done',
-          name: 'precisionCheckDone',
-          component: precisionCheckDone,
-          meta: [
-            {
-              name: '精密点检',
-              url: ''
-            },
-            {
-              name: '已完成',
-              url: ''
-            }
-          ]
-        },
-        {
-          path: '/manage/precision-check/will',
-          name: 'precisionCheckWill',
-          component: precisionCheckWill,
-          meta: [
-            {
-              name: '精密点检',
-              url: ''
-            },
-            {
-              name: '未完成',
-              url: ''
-            }
-          ]
+          path: '/work',
+          name: 'work',
+          component: workIndex,
+          redirect: '/work/list',
+          children: [{
+            path: '/work/list',
+            name: 'work-list',
+            component: workList
+          }]
         },
         // 设备管理
         {
-          path: '/manage/device/list',
-          name: 'deviceList',
-          component: deviceList,
-          meta: [
-            {
-              name: '设备管理',
-              url: ''
-            },
-            {
-              name: '设备列表',
-              url: ''
-            }
-          ]
-        },
-        {
-          path: '/manage/device/group',
-          name: 'deviceGroup',
-          component: deviceGroup,
-          meta: [
-            {
-              name: '设备管理',
-              url: ''
-            },
-            {
-              name: '设备归类',
-              url: ''
-            }
-          ]
+          path: '/device',
+          name: 'device',
+          component: deviceIndex,
+          redirect: '/device/list',
+          children: [{
+            path: '/device/list',
+            name: 'device-list',
+            component: deviceList,
+          }, {
+            path: '/device/add',
+            name: 'device-add',
+            component: deviceAdd
+          }]
         },
         // 用户管理
         {
@@ -229,20 +138,9 @@ const router = new Router({
             }
           ]
         },
-        // 公告管理
-        {
-          path: '/manage/notice',
-          name: 'notice',
-          component: notice,
-          meta: [
-            {
-              name: '公告管理'
-            }
-          ]
-        },
         // 账户管理
         {
-          path: '/manage/account',
+          path: '/account',
           name: 'account',
           component: account,
           meta: [

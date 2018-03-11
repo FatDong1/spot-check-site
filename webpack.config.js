@@ -50,7 +50,7 @@ module.exports = (options = {}) => ({
   ],
   resolve: {
     alias: {
-      '~': resolve(__dirname, 'src')
+      'shared@': resolve(__dirname, 'src')
     }
   },
   devServer: {

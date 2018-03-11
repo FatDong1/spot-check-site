@@ -1,0 +1,119 @@
+<template>
+ <view-content-float class="app-breadcrumb" padding="0">
+    <el-breadcrumb separator=">">
+      <div class="el-breadcrumb-head">您的位置：</div>
+      <el-breadcrumb-item
+        v-for="(item, index) in breadcrumbOptions"
+        :key="index"
+        :to="{ path: item.to }">
+        {{ item.title }}
+        </el-breadcrumb-item>
+    </el-breadcrumb>
+     <el-input
+      class="app-search"
+      slot="right"
+      :placeholder="searchPlaceholder"
+      @keyup.enter.native="changeSearchFilter"
+      v-model="searchFilter"
+      v-show="searchShow">
+       <i class="el-input__icon el-icon-search" slot="suffix" @click="changeSearchFilter"></i> 
+    </el-input> 
+  </view-content-float>
+</template>
+
+<script>
+// 面包屑配置对象
+const breadcrumbConfig = {}
+breadcrumbConfig['home'] = { to: '/home', title: '首页' }
+breadcrumbConfig['work'] = { to: '/work/list', title: '工单列表' }
+breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
+// 首页模块相关面包屑
+
+
+export default {
+  data () {
+    return {
+      breadcrumbOptions: [{}],
+      searchShow: true,
+      searchPlaceholder: '请输入名称',
+      searchFilter: ''
+    }
+  },
+  methods: {
+    changeBreadcrumbOptions () {
+      this.breadcrumbOptions = Array.prototype.slice.call(arguments).map((option) => {
+        return breadcrumbConfig[option]
+      })
+    },
+    changeSearchFilter () {
+      let query = Object.assign({}, this.$route.query, {
+        searchFilter: this.searchFilter
+      })
+      this.$router.push({
+        query
+      })
+    },
+    setBreadcrumb (to) {
+      switch (to.name) {
+        case 'home':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home')
+          break
+        case 'work-list':
+          this.searchShow = true
+          this.searchPlaceholder = '请输入设备名称'
+          this.changeBreadcrumbOptions('home', 'work')
+          break
+        case 'device-list':
+          this.searchShow = true
+          this.searchPlaceholder = '请输入设备名称'
+          this.changeBreadcrumbOptions('home', 'device')
+          break
+        default:
+          console.error('app-breadcrumb', 'route.name 不存在')
+          this.breadcrumbOptions = [{}]
+      }
+    }
+  },
+  created () {
+    this.setBreadcrumb(this.$route)
+  },
+  mounted () {
+    this.$router.afterEach((to) => {
+      this.setBreadcrumb(to)
+    })
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.el-breadcrumb {
+  height: 30px;
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 30px;
+  color: #5a5e66;
+}
+
+.el-breadcrumb-head {
+  float: left;
+  margin-right: 10px;
+}
+
+.el-breadcrumb__separator {
+  font-weight: 400;
+}
+
+.app-breadcrumb {
+  margin-bottom: 10px;
+}
+
+.app-search {
+  margin-top: 4px;
+  width: 240px;
+}
+
+.el-icon-search {
+  cursor: pointer;
+}
+</style>

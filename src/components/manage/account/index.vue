@@ -1,19 +1,21 @@
 <template>
-  <el-form class="account-form" :rules="rule" status-icon ref="accountForm" :model="accountForm" label-width="80px" center>
-    <el-form-item label="账户" prop="name">
-      <span>{{accountForm.name}}</span>
-    </el-form-item>
-    <el-form-item label="新密码" prop="pass">
-      <el-input type="password" v-model="accountForm.pass"></el-input>
-    </el-form-item>
-    <el-form-item label="确认密码" prop="checkPass">
-      <el-input type="password" v-model="accountForm.checkPass"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">修改</el-button>
-      <el-button>取消</el-button>
-    </el-form-item>
-  </el-form>
+  <view-container>
+    <el-form class="account-form" :rules="rule" status-icon ref="accountForm" :model="accountForm" label-width="80px" center>
+      <el-form-item label="账户" prop="name">
+        <span>{{accountForm.name}}</span>
+      </el-form-item>
+      <el-form-item label="新密码" prop="pass">
+        <el-input type="password" v-model="accountForm.pass"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input type="password" v-model="accountForm.checkPass"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">修改</el-button>
+        <el-button>取消</el-button>
+      </el-form-item>
+    </el-form>
+  </view-container>
 </template>
 
 <script>

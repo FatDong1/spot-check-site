@@ -1,21 +1,25 @@
 <template>
-  <div>
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item
-        :key="index"
-        :to="item.url"
-        v-for="(item, index) in $route.meta">{{item.name}}</el-breadcrumb-item>
-    </el-breadcrumb>
-    <el-dropdown @command="handleCommand">
-      <span class="el-dropdown-link">
-        王小虎<i class="el-icon-caret-bottom el-icon--right"></i>
-      </span>
+  <el-menu
+    class="header-menu"
+    mode="horizontal"
+    background-color="#2b3c5a"
+    active-text-color="#409eff"
+    text-color="#ffffff">
+    <div class="header-logo">
+    LOGO
+    </div>
+    <!-- <el-menu-item index="1">i商机</el-menu-item>
+    <el-menu-item index="2">CTC</el-menu-item> -->
+    <el-dropdown class="header-user-area" trigger="click">
+      <div class="header-user">
+        <span class="user-name">许浩东</span>
+        <i class="el-icon-arrow-down el-icon--right"></i>
+      </div>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="a">注销</el-dropdown-item>
+        <el-dropdown-item @click.native="userLogout">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-  </div>
+  </el-menu>
 </template>
 
 <script>
@@ -31,18 +35,57 @@ export default {
 }
 </script>
 
-<style>
-.el-breadcrumb,
-.el-dropdown {
-  display: inline-block;
-  background-color: #EFF2F7;
-  height: 60px;
-  line-height: 60px;
+<style lang="less" scoped>
+.header-menu {
+  color: #ffffff;
+  border-bottom: none;
 }
 
-.el-dropdown {
-  position: absolute;
-  right: 10px;
+.header-logo {
+  float: left;
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  cursor: default;
+  outline: none;
+
+  // .logo-img {
+  //   display: block;
+  //   margin: 14px 29px;
+  //   width: 92px;
+  //   height: 22px;
+  // }
+}
+
+.el-menu-item {
+  height: 50px;
+  margin-right: 20px;
+  line-height: 50px;
+}
+
+.header-user-area {
+  float: right;
+  margin-right: 20px;
+  outline: none;
+  cursor: pointer;
+}
+
+.header-user {
+  padding: 13px 10px;
+  height: 50px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #c4c8d1;
+  outline: none;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .user-name {
+    display: block;
+    float: left;
+    margin-top: 2px;
+  }
 }
 
 </style>

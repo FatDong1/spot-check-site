@@ -1,11 +1,14 @@
 <template>
-  <el-container class="container">
-      <sidebar></sidebar>
-    <el-container class="right">
-      <el-header>
-        <v-header></v-header>
-      </el-header>
+  <el-container>
+    <el-header height="50px">
+      <app-header id="app-header"></app-header>
+    </el-header>
+    <el-container>
+      <el-aside id="app-aside" width="150px">
+        <app-sidebar ref="sidebar"></app-sidebar>
+      </el-aside>
       <el-main>
+        <app-breadcrumb></app-breadcrumb>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -13,35 +16,41 @@
 </template>
 
 <script>
-  import vHeader from './layout/header.vue'
-  import sidebar from './layout/sidebar.vue'
+import AppHeader from './layout/header.vue'
+import AppSidebar from './layout/sidebar.vue'
+import AppBreadcrumb from './layout/breadcrumb.vue'
 
-  export default {
-    components: {
-      vHeader,
-      sidebar
-    }
+export default {
+  components: {
+    AppHeader,
+    AppSidebar,
+    AppBreadcrumb
   }
+}
 </script>
 
 <style>
+.el-container {
+  height: 100%;
+  overflow: hidden;
+}
+.el-header {
+  padding: 0;
+}
 
-  body{
-    width: 100vw;
-  }
-  .container {
-    height: 100vh;
-    width: 100%;
-  }
+#app-aside {
+  height: 100%;
+  background-color: #2b3c5a;
+}
 
-  .el-header {
-    background-color: #eff2f7;
-    color: #ffffff;
-    float: left;
-  }
+.el-main {
+  background-color: #f2f2f2;
+  padding: 10px;
+}
 
-  .right{
-    overflow-x: auto;
-  }
+.el-menu--horizontal>.el-menu-item.is-active,
+.el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+  border-bottom: 4px solid #409EFF
+}
 </style>
 

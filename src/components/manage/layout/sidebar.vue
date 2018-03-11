@@ -1,19 +1,29 @@
 <template>
   <el-menu
     mode="vertical"
-    class="sidebar-menu"
-    default-active="2"
-    background-color="#545c64"
+    class="app-sidebar"
+    background-color="#2b3c5a"
     text-color="#fff"
     active-text-color="#409eff"
     :router="router"
-    unique-opened="true"
-    :collapse="isCollapse">
-    <el-menu-item index="/manage" style="font-size: 16px; color: #409eff">
-      <i class="el-icon-menu" style="color: #409eff"></i>
-      <span>设备点检系统</span>
+    :default-active="sidebarSelectItem">
+    <el-menu-item index="/home">
+      <i class="el-icon-menu"></i>
+      <span>首页</span>
     </el-menu-item>
-    <el-submenu index="2">
+    <el-menu-item index="/work">
+      <i class="el-icon-menu"></i>
+      <span>工单</span>
+    </el-menu-item>
+    <el-menu-item index="/device">
+      <i class="el-icon-menu"></i>
+      <span>设备</span>
+    </el-menu-item>
+    <el-menu-item index="/account">
+      <i class="el-icon-menu"></i>
+      <span>账户</span>
+    </el-menu-item>
+    <!-- <el-submenu index="2">
       <template slot="title">
         <i class="el-icon-tickets"></i>
         <span>日常点检</span>
@@ -69,13 +79,7 @@
     <el-menu-item index="/manage/account">
       <i class="el-icon-goods"></i>
       <span slot="title">账户管理</span>
-    </el-menu-item>
-    <el-tooltip effect="dark" placement="top" :content="content">
-      <el-menu-item class="footer-collapse" @click="isCollapse = !isCollapse">
-        <i v-if="!isCollapse" class="el-icon-d-arrow-left"></i>
-        <i v-if="isCollapse" class="el-icon-d-arrow-right"></i>
-      </el-menu-item>
-    </el-tooltip>
+    </el-menu-item> -->
   </el-menu>
 </template>
 
@@ -84,42 +88,65 @@
     data () {
       return {
         router: true,
-        isCollapse: false
+        sidebarSelectItem: '/home'
       }
     },
-    methods: {},
-    computed: {
-      content () {
-        if (this.isCollapse) {
-          return '点击展开侧边栏'
-        } else {
-          return '点击折叠侧边栏'
-        }
-      }
+    methods: {
+
+    },
+    created () {
+      this.sidebarSelectItem = '/' + this.$route.name
     }
   }
 </script>
 
-<style>
-  .sidebar-menu {
-    position: relative;
-  }
-  .sidebar-menu:not(.el-menu--collapse) {
-    display: block;
-    width: 200px;
-    height: 100%;
-    border: none;
-    min-height: 100vh;
+<style lang="less">
+.app-sidebar {
+  &.el-menu {
+    width: 150px;
+    border-right: none;
+    font-size: 12px;
   }
 
-  .el-menu--collapse {
-    min-height: 100vh;
+  .el-menu-item,
+  .el-submenu__title {
+    position: relative;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
   }
-  .footer-collapse {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 30px;
+
+  .el-icon-menu {
+    margin-right: 0;
   }
+
+  .el-menu-item-group__title {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .sidebar-menu-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: 14px 14px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+  }
+  .is-active {
+    position: relative;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: #409eff;
+    }
+  }
+}
 </style>
