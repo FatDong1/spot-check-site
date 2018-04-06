@@ -1,31 +1,31 @@
 const productType = {
-  color: ['#64b6fe', '#89d13b', '#fcb23c', '#fd6f70', '#b494f5', '#b0d984'],
+  color: ['#64b6fe', '#89d13b', '#fcb23c', '#fd6f70', '#b494f5', '#c7c777'],
   tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b}: {c} ({d}%)'
+    triggerOn: 'click',
+    confine: true,
+    formatter: function (params) {
+      return `${params.name}<br/>${params.value}万元`
+    }
   },
   legend: {
+    itemWidth: 12,
+    itemHeight: 12,
     orient: 'vertical',
     x: 'left',
-    data: []
+    y: 'center',
+    data: ['Saas私有云', 'Saas公有云', '实施', '服务', '许可证']
   },
   series: [
     {
-      name: '访问来源',
+      name: '商品类型统计',
       type: 'pie',
-      radius: ['30%', '70%'],
+      radius: ['30%', '90%'],
+      center: ['73%', '50%'],
+      hoverAnimation: false,
       avoidLabelOverlap: false,
       label: {
         normal: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
-          show: true,
-          textStyle: {
-            fontSize: '30',
-            fontWeight: 'bold'
-          }
+          show: false
         }
       },
       labelLine: {
@@ -33,7 +33,13 @@ const productType = {
           show: false
         }
       },
-      data: []
+      data: [
+        {value: 335, name: 'Saas私有云'},
+        {value: 310, name: 'Saas公有云'},
+        {value: 234, name: '实施'},
+        {value: 135, name: '服务'},
+        {value: 1548, name: '许可证'}
+      ]
     }
   ]
 }

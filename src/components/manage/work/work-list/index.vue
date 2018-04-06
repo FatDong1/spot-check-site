@@ -37,15 +37,19 @@
         :data="workListData">
         <el-table-column type="index">
         </el-table-column>
-        <!-- <el-table-column prop="name" :label="$t('business-name')">
-          <template slot-scope="scope">
-            {{ scope.row.name }}
-            <span v-if="scope.row.status === -1" class="business-status">({{ $t('customer-approval-pending') }})</span>
-          </template>
-        </el-table-column> -->
         <el-table-column prop="name" label="设备名称"></el-table-column>
+        <el-table-column prop="stage" label="工单状态"></el-table-column>
+        <el-table-column prop="factory" label="设备归属"></el-table-column>
         <el-table-column prop="checkPlace" label="检查部位"></el-table-column>
         <el-table-column prop="checkContent" label="检查内容"></el-table-column>
+        <el-table-column
+          label="操作"
+          width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="handleEdit(scope.row)" type="text" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </view-content>
     <!-- view可视框的脚部，分页组件 -->
@@ -64,7 +68,7 @@
 
 <script>
 import { convertTimestamp } from 'shared@/utils/common.js'
-
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -109,26 +113,34 @@ export default {
       workListData: [
         {
           name: '车床',
+          stage: '完成',
           checkPlace: '头部',
-          checkContent: '点检的内容'
+          checkContent: '点检的内容',
+          factory: '第一工厂第一车间'
         },
         {
           name: '车床',
+          stage: '完成',          
           checkPlace: '头部',
+          factory: '第一工厂第一车间',
           checkContent: '点检的内容'
         },        
         {
           name: '车床',
+          stage: '完成',          
           checkPlace: '头部',
+          factory: '第一工厂第一车间',
           checkContent: '点检的内容'
         }
       ]
     }
   },
   methods: {
+    ...mapMutations('work-data', [
+      'updateWorkData'
+    ]),
     // 改变工单阶段
     changeStage (state) {
-      console.log(state)
       let query = Object.assign({}, this.$route.query, {
         state
       })
@@ -161,6 +173,26 @@ export default {
       })
       this.$router.push({
         query
+      })
+    },
+    handleView (row) {
+      console.log(112, row)      
+      this.updateWorkData(row)
+      this.$router.push({
+        name: 'work-detail',
+        params: {
+          id: 1
+        }
+      })
+    },
+    handleEdit (row) {
+      console.log(112, row)
+      this.updateWorkData(row)      
+      this.$router.push({
+        name: 'work-detail',
+        params: {
+          id: 1
+        }
       })
     }
   }

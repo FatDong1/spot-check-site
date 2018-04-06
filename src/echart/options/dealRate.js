@@ -1,81 +1,48 @@
 const dealRate = {
   color: ['#89d13b', '#3da5fe'],
   tooltip: {
+    confine: true,
     trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-      crossStyle: {
-        color: '#999'
-      }
+    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+      type: false
     }
   },
-  toolbox: {
-    feature: {
-      dataView: {
-        show: true,
-        readOnly: false
-      },
-      magicType: {
-        show: true,
-        type: ['line', 'bar']
-      },
-      restore: {
-        show: true
-      },
-      saveAsImage: {
-        show: true
-      }
-    }
+  grid: {
+    left: 0,
+    right: '5%',
+    bottom: '18%'
   },
   legend: {
+    itemWidth: 12,
+    itemHeight: 12,
     data: ['成单量', '成单率']
   },
   xAxis: [
     {
       type: 'category',
-      data: [],
-      axisPointer: {
-        type: 'shadow'
-      },
+      boundaryGap: true,
+      data: ['8月', '9月', '10月', '11月'],
       axisTick: {
         show: false
+      },
+      axisLabel: {
+        color: '#666666'
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
       }
     }
   ],
   yAxis: [
     {
       type: 'value',
-      name: '（单）',
-      interval: 3,
-      axisTick: {
-        show: false
-      },
-      splitLine: {
-        lineStyle: {
-          color: '#ebebeb'
-        }
-      },
-      axisLabel: {
-        formatter: '{value}'
-      }
+      show: false
     },
     {
       type: 'value',
-      name: '百分比',
-      min: 0,
-      max: 100,
-      interval: 20,
-      axisTick: {
-        show: false
-      },
-      splitLine: {
-        lineStyle: {
-          color: '#ebebeb'
-        }
-      },
-      axisLabel: {
-        formatter: '{value}%'
-      }
+      show: false
     }
   ],
   series: [
@@ -83,13 +50,40 @@ const dealRate = {
       name: '成单量',
       type: 'bar',
       barWidth: '40%',
-      data: []
+      data: [4, 7, 6, 9],
+      label: {
+        normal: {
+          show: true,
+          position: 'right',
+          formatter: '{c}'
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: '#64B6FE'
+        }
+      }
     },
     {
       name: '成单率',
       type: 'line',
       yAxisIndex: 1,
-      data: []
+      data: [0.23, 0.34, 0.73, 0.66],
+      label: {
+        normal: {
+          color: '#333333',
+          show: true,
+          formatter: (params) => {
+            return params.value * 100 + '%'
+          }
+        }
+      },
+      itemStyle: {
+        normal: {
+          color: '#FCB23C',
+          borderColor: '#FCB23C'
+        }
+      }
     }
   ]
 }

@@ -1,16 +1,15 @@
 <template>
   <el-form
     label-width="120px"
-    ref="customerForm"
-    :rules="rules"
-    :model="customerFormData">
+    ref="deviceForm"
+    :model="deviceFormData">
     <h3 class="content-header">基本信息</h3>
     <row-layout :column="3">
       <el-form-item slot="left" prop="name" label="设备名称">
-        <el-input v-model="customerFormData.name" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item slot="center" prop="department" label="所属部门">
-        <el-select v-model="customerFormData.department" :disabled="disabled">
+        <el-select v-model="deviceFormData.department" :disabled="disabled">
           <el-option
             v-for="item in departmentOptions"
             :key="item.value"
@@ -19,29 +18,29 @@
         </el-select>
       </el-form-item>
       <el-form-item slot="right" prop="category" label="设备类别">
-        <el-input v-model="customerFormData.category" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.category" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :column="3">
       <el-form-item slot="left" prop="deviceModel" label="设备型号">
-        <el-input v-model="customerFormData.deviceModel" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.deviceModel" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item slot="center" prop="serialNumber" label="出厂编号">
-        <el-input v-model="customerFormData.serialNumber" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.serialNumber" :disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item slot="right" prop="usePlace" label="使用地点">
-        <el-input v-model="customerFormData.usePlace" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.usePlace" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :span="16">
       <el-form-item prop="productionAddress" label="生产地址">
-        <el-input v-model="customerFormData.productionAddress" :disabled="disabled"></el-input>
+        <el-input v-model="deviceFormData.productionAddress" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :span="16">
       <!-- 备注 -->
       <el-form-item prop="remark" label="备注">
-        <el-input type="textarea" v-model="customerFormData.remark" :min="3" :disabled="disabled"></el-input>
+        <el-input type="textarea" v-model="deviceFormData.remark" :min="3" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
   </el-form>
@@ -50,6 +49,9 @@
 <script>
 export default {
   props: {
+    step: {
+      type: Number
+    },
     data: {
       type: Object,
       default: () => {
@@ -67,40 +69,7 @@ export default {
           companyWeb: '',
           companyScale: '',
           companyProfitability: '',
-          remark: '',
-          departmentOptions: [{
-            value: 'shejiyuanze',
-            label: '第一工厂',
-            children: [{
-              value: 'yizhi',
-              label: '第一车间'
-            }, {
-              value: 'fankui',
-              label: '第二车间'
-            }, {
-              value: 'xiaolv',
-              label: '第三车间'
-            }, {
-              value: 'kekong',
-              label: '第四车间'
-            }]
-          }, {
-            value: 'shejiyuanze',
-            label: '第二工厂',
-            children: [{
-              value: 'yizhi',
-              label: '第一车间'
-            }, {
-              value: 'fankui',
-              label: '第二车间'
-            }, {
-              value: 'xiaolv',
-              label: '第三车间'
-            }, {
-              value: 'kekong',
-              label: '第四车间'
-            }]
-          }]
+          remark: ''
         }
       }
     }
@@ -113,8 +82,48 @@ export default {
       selectItem: null,
       disabled: false,
       inputDisabled: false,
-      customerFormData: {}
+      deviceFormData: {},
+      departmentOptions: [{
+        value: 'shejiyuanze',
+        label: '第一工厂',
+        children: [{
+          value: 'yizhi',
+          label: '第一车间'
+        }, {
+          value: 'fankui',
+          label: '第二车间'
+        }, {
+          value: 'xiaolv',
+          label: '第三车间'
+        }, {
+          value: 'kekong',
+          label: '第四车间'
+        }]
+      }, {
+        value: 'shejiyuanze1',
+        label: '第二工厂',
+        children: [{
+          value: 'yizhi',
+          label: '第一车间'
+        }, {
+          value: 'fankui',
+          label: '第二车间'
+        }, {
+          value: 'xiaolv',
+          label: '第三车间'
+        }, {
+          value: 'kekong',
+          label: '第四车间'
+        }]
+      }]
     }
+  },
+  watch: {
+    step (val) {
+      if (val === 1) {
+        this.$emit('dispatch', this.deviceFormData, this.$refs.deviceForm)
+      }
+    },
   }
 }
 </script>

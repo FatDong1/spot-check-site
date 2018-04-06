@@ -3,25 +3,32 @@ const deadBusinessAnalysis = {
   tooltip: {
     trigger: 'axis',
     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-      type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+      type: false        // 默认为直线，可选为：'line' | 'shadow'
     }
   },
   legend: {
     data: ['本月', '今年累计']
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
+    left: '10%',
+    right: '5%',
+    bottom: '13%',
+    containLabel: false
   },
   xAxis: [
     {
       type: 'category',
       data: ['3个月', '6个月', '9个月'],
+      axisLabel: {
+        color: '#9B9B9B'
+      },
       axisTick: {
-        show: false,
-        alignWithLabel: true
+        show: false
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
       }
     }
   ],
@@ -29,15 +36,35 @@ const deadBusinessAnalysis = {
     {
       type: 'value',
       name: '万',
+      axisLabel: {
+        color: '#9B9B9B'
+      },
       axisTick: {
         show: false
       },
-      splitLine: {
+      axisLine: {
         lineStyle: {
-          color: '#ebebeb'
+          color: '#E1E3E6'
         }
       },
-      boundaryGap: [0, 0.01]
+      nameTextStyle: {
+        color: '#9B9B9B',
+        fontSize: '12px'
+      }
+    },
+    {
+      type: 'value',
+      axisLabel: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
+      }
     }
   ],
   series: [

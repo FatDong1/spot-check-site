@@ -27,6 +27,7 @@ const breadcrumbConfig = {}
 breadcrumbConfig['home'] = { to: '/home', title: '首页' }
 breadcrumbConfig['work'] = { to: '/work/list', title: '工单列表' }
 breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
+breadcrumbConfig['company'] = { to: '/company', title: '组织架构' }
 // 首页模块相关面包屑
 
 
@@ -68,6 +69,10 @@ export default {
           this.searchShow = true
           this.searchPlaceholder = '请输入设备名称'
           this.changeBreadcrumbOptions('home', 'device')
+          break
+        case 'company':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'company')
           break
         default:
           console.error('app-breadcrumb', 'route.name 不存在')

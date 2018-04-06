@@ -16,7 +16,25 @@
     <view-content padding="20px 10px">
       <base-info
         v-show="currentActive === 0"
-        :data="baseInfoData"></base-info>
+        :data="baseInfoData"
+        :step="stepActive"
+        @dispatch="handleBaseInfoDispatch"></base-info>
+      <set-place 
+        v-show="currentActive === 1"
+        :step="stepActive"
+        :data="placeData"
+        @dispatch="handleSetPlaceDispatch">
+      </set-place>
+      <set-standard 
+        v-show="currentActive === 2"
+        :step="stepActive"
+        @dispatch="handleSetStandardDispatch">
+      </set-standard>
+      <set-person 
+        v-show="currentActive === 3"
+        :step="stepActive"
+        @dispatch="handleSetPersonDispatch">
+      </set-person>
       <!-- <fill-in-info
         v-show="currentActive === 1"
         :step="stepActive"
@@ -47,7 +65,6 @@
         slot="right"
         type="primary"
         v-if="currentActive < 3"
-        :disabled="btnDisabled"
         @click="handleNextStepClick">下一步</el-button> 
       </div>
     </tool-bar>
@@ -56,28 +73,79 @@
 
 <script>
 import BaseInfo from './baseInfo.vue'
+import SetPlace from './setPlace.vue'
+import SetStandard from './set-standard/index.vue'
+import SetPerson from './set-person/index.vue'
 export default {
   components: {
-    BaseInfo
+    BaseInfo,
+    SetPlace,
+    SetStandard,
+    SetPerson
   },
   data () {
     return {
+      stepType: 'next',
+      stepActive: 0,
       currentActive: 0,
       baseInfoData: {
         name: ''
+      },
+      placeData: {
+
       }
     }
   },
   methods: {
-    handlePrevStepClick () {
-
+    handleBaseInfoDispatch (data, node) {
+      this.currentActive = this.stepActive
+      // if (this.stepType === 'next') {
+      //   node.validate(valid => {
+      //     console.log(valid)
+      //     if (valid) {
+      //       this.updateCustomerForm(data)
+      //       this.currentActive = this.stepActive
+      //     } else {
+      //       this.resetStep()
+      //       return false
+      //     }
+      //   })
+      // } else {
+      //   this.updateCustomerForm(data)
+      //   this.currentActive = this.stepActive
+      // }
     },
-    handleSubmit () {
-
+    handleSetPlaceDispatch () {
+       this.currentActive = this.stepActive
     },
+    handleSetStandardDispatch () {
+       this.currentActive = this.stepActive      
+    },
+    handleSetPersonDispatch () {
+       this.currentActive = this.stepActive      
+    },
+    /**
+     * 下一步 按钮点击事件
+     */
     handleNextStepClick () {
-
-    }
+      this.stepType = 'next'
+      this.stepActive++
+    },
+    /**
+     * 上一步 按钮点击事件
+     */
+    handlePrevStepClick () {
+      this.stepType = 'prev'
+      this.stepActive--
+    },
+    /**
+     * 提交按钮点击事件
+     */
+    handleSubmit () {
+      // 发送send信号
+      // 将联系人组件列表状态 dispatch 到本组件
+      this.send++
+    },
   }
 }
 </script>

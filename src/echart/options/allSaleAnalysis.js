@@ -1,55 +1,38 @@
 const allSaleAnalysis = {
   color: ['#c7c777', '#fdc163', '#90cbff', '#b0d984', '#bca4ed', '#fcb23c', '#64b6fe', '#89d13b'],
-  title: {
-    text: '漏斗图',
-    subtext: '纯属虚构'
-  },
   tooltip: {
     trigger: 'item',
-    formatter: '{a} <br/>{b} : {c}%'
-  },
-  toolbox: {
-    feature: {
-      dataView: {readOnly: false},
-      restore: {},
-      saveAsImage: {}
+    position: 'right',
+    triggerOn: 'click',
+    formatter: function (params) {
+      return `${params.name}<br/>${params.value}万元`
     }
   },
-  calculable: true,
+  grid: {
+    top: '0%',
+    bottom: '0%',
+    left: '0',
+    right: '0'
+  },
   series: [
     {
       name: '漏斗图',
       type: 'funnel',
-      left: '10%',
-      top: 20,
-      // x2: 80,
-      bottom: 60,
-      width: '80%',
-      height: 220,
-      min: 0,
-      max: 100,
+      left: '0%',
+      top: 0,
+      bottom: 0,
+      width: '100%',
+      height: 152,
       minSize: '0%',
       maxSize: '100%',
-      sort: 'descending',
+      sort: 'none',
       gap: 0,
       label: {
         normal: {
-          show: true,
-          position: 'inside'
+          show: false
         },
         emphasis: {
-          textStyle: {
-            fontSize: 20
-          }
-        }
-      },
-      labelLine: {
-        normal: {
-          length: 10,
-          lineStyle: {
-            width: 1,
-            type: 'solid'
-          }
+          show: false
         }
       },
       itemStyle: {
@@ -58,7 +41,16 @@ const allSaleAnalysis = {
           borderWidth: 1
         }
       },
-      data: []
+      data: [
+        {value: 100, name: '前期摸底'},
+        {value: 90, name: '初步接触'},
+        {value: 80, name: '需求交流'},
+        {value: 70, name: '产品PCC'},
+        {value: 50, name: '方案汇报'},
+        {value: 40, name: '商务洽谈'},
+        {value: 20, name: '合同签订'},
+        {value: 10, name: '赢单'}
+      ]
     }
   ]
 }

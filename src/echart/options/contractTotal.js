@@ -2,28 +2,29 @@ const contractTotal = {
   color: ['#89d13b', '#64b6fe'],
   tooltip: {
     trigger: 'axis',
+    triggerOn: 'click',
+    confine: true,
     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-      type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+      type: false             // 默认为直线，可选为：'line' | 'shadow'
     }
   },
   legend: {
-    data: ['本周新增', '全年累计']
+    itemWidth: 12,
+    itemHeight: 12,
+    data: ['本周新增', '今年累计']
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    left: '0%',
+    right: '-4%',
+    bottom: '0%',
     containLabel: true
   },
   xAxis: [
     {
       type: 'category',
-      data: [],
-      axisTick: {
-        show: false,
-        alignWithLabel: true
-      },
+      data: ['华南区', '华东区', '华北区', '闽浙', '华中区'],
       axisLabel: {
+        color: '#9B9B9B',
         interval: 0,
         formatter: function (value) {
           var ret = '' // 拼接加\n返回的类目项
@@ -44,6 +45,14 @@ const contractTotal = {
             return value
           }
         }
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
       }
     }
   ],
@@ -51,29 +60,51 @@ const contractTotal = {
     {
       type: 'value',
       name: '万',
-      splitLine: {
-        lineStyle: {
-          color: '#ebebeb'
-        }
+      splitNumber: 5,
+      boundaryGap: [0, 0.01],
+      axisLabel: {
+        color: '#9B9B9B'
       },
       axisTick: {
         show: false
       },
-      boundaryGap: [0, 0.01]
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
+      },
+      nameTextStyle: {
+        color: '#9B9B9B',
+        fontSize: '12px'
+      }
+    },
+    {
+      type: 'value',
+      axisLabel: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
+      }
     }
   ],
   series: [
     {
       name: '本周新增',
       type: 'bar',
-      barWidth: '20%',
-      data: []
+      barWidth: '15%',
+      data: [10, 52, 200, 334, 390]
     },
     {
-      name: '全年累计',
+      name: '今年累计',
       type: 'bar',
-      barWidth: '20%',
-      data: []
+      barWidth: '15%',
+      data: [10, 52, 200, 334, 390]
     }
   ]
 }

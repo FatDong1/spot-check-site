@@ -12,16 +12,20 @@
       <span>首页</span>
     </el-menu-item>
     <el-menu-item index="/work">
-      <i class="el-icon-menu"></i>
+      <i class="el-icon-tickets"></i>
       <span>工单</span>
     </el-menu-item>
     <el-menu-item index="/device">
-      <i class="el-icon-menu"></i>
+      <i class="el-icon-edit"></i>
       <span>设备</span>
     </el-menu-item>
     <el-menu-item index="/account">
-      <i class="el-icon-menu"></i>
-      <span>账户</span>
+      <i class="el-icon-location-outline"></i>
+      <span>账户管理</span>
+    </el-menu-item>
+    <el-menu-item index="/company">
+      <i class="el-icon-setting"></i>
+      <span>组织架构</span>
     </el-menu-item>
     <!-- <el-submenu index="2">
       <template slot="title">

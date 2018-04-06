@@ -2,31 +2,38 @@ const productSaleRank = {
   color: ['#89d13b', '#64b6fe'],
   tooltip: {
     trigger: 'axis',
-    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-      type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    triggerOn: 'click',
+    confine: true,
+    axisPointer: {
+      type: false
     }
   },
   legend: {
-    top: '20px',
+    itemWidth: 12,
+    itemHeight: 12,
+    top: '0',
     data: ['销售数量', '销售金额']
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    left: '0',
+    bottom: '0',
     containLabel: true
   },
   yAxis: [
     {
       type: 'category',
-      data: [],
-      boundaryGap: ['0%', '3%'],
-      axisLine: {
+      boundaryGap: false,
+      data: ['美捷报', '地动仪', '观星台', 'IHR', '陀螺仪'],
+      axisTick: {
         show: false
       },
-      axisTick: {
-        show: false,
-        alignWithLabel: true
+      axisLabel: {
+        color: '#000000'
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#E1E3E6'
+        }
       }
     }
   ],
@@ -34,35 +41,36 @@ const productSaleRank = {
     {
       type: 'value',
       show: false,
-      boundaryGap: ['0%', '3%']
+      boundaryGap: ['0%', '10%']
     }
   ],
   series: [
     {
       name: '销售数量',
       type: 'bar',
+      barWidth: '14px',
+      barCategoryGap: '100%',
+      data: [10, 52, 200, 334, 390],
       label: {
         normal: {
           show: true,
           position: 'right',
           formatter: '{c}套'
         }
-      },
-      barWidth: '35%',
-      data: []
+      }
     },
     {
       name: '销售金额',
       type: 'bar',
+      barWidth: '14px',
+      data: [10, 52, 200, 334, 390],
       label: {
         normal: {
           show: true,
           position: 'right',
           formatter: '{c}万'
         }
-      },
-      barWidth: '35%',
-      data: []
+      }
     }
   ]
 }
