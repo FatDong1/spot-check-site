@@ -68,7 +68,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 .form-label {
   display: inline-block;
 }
@@ -76,3 +76,4 @@ export default {
   margin-bottom: 10px !important;
 }
 </style>
+

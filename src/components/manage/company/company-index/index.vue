@@ -25,14 +25,21 @@
         </span>
       </span>
     </el-tree>
+    <company-dialog :dialogFormVisible="dialogVisible"></company-dialog>
   </view-container>
 </template>
 
 <script>
+import CompanyDialog from '../company-dialog/index.vue'
 export default {
+  components: {
+    CompanyDialog
+  },
   data () {
     return {
-       companyData: [{
+      id: 11,
+      dialogVisible: false,
+      companyData: [{
         id: 1,
         label: '第一工厂',
         children: [{
@@ -71,7 +78,9 @@ export default {
   },
   methods: {
     append(data) {
-      const newChild = { id: id++, label: 'testtest', children: [] };
+      this.id = this.id + 1
+      this.dialogVisible = true
+      const newChild = { id: this.id, label: 'testtest', children: [] };
       if (!data.children) {
         this.$set(data, 'children', []);
       }
@@ -79,10 +88,25 @@ export default {
     },
 
     remove(node, data) {
-      const parent = node.parent;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex(d => d.id === data.id);
-      children.splice(index, 1);
+      this.$confirm('此操作将从组织架构永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const parent = node.parent
+        const children = parent.data.children || parent.data
+        const index = children.findIndex(d => d.id === data.id)
+        children.splice(index, 1)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })       
+      })
     }
   }
 }

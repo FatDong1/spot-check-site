@@ -26,8 +26,12 @@
 const breadcrumbConfig = {}
 breadcrumbConfig['home'] = { to: '/home', title: '首页' }
 breadcrumbConfig['work'] = { to: '/work/list', title: '工单列表' }
-breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
+breadcrumbConfig['work-detail'] = { to: '/work/detail', title: '' }
+
 breadcrumbConfig['company'] = { to: '/company', title: '组织架构' }
+
+breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
+breadcrumbConfig['device-add'] = { to: '/device/add', title: '新增设备' }
 // 首页模块相关面包屑
 
 
@@ -65,10 +69,24 @@ export default {
           this.searchPlaceholder = '请输入设备名称'
           this.changeBreadcrumbOptions('home', 'work')
           break
+        case 'work-detail':
+          this.searchShow = false
+          let state = this.$route.params.state
+          if (state === 'view') {
+            breadcrumbConfig['work-detail'].title = '工单查看'
+          } else {
+            breadcrumbConfig['work-detail'].title = '工单录入'
+          }
+          this.changeBreadcrumbOptions('home', 'work', 'work-detail')
+          break
         case 'device-list':
           this.searchShow = true
           this.searchPlaceholder = '请输入设备名称'
           this.changeBreadcrumbOptions('home', 'device')
+          break
+        case 'device-add':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'device', 'device-add')
           break
         case 'company':
           this.searchShow = false

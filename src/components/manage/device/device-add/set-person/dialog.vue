@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="添加标准"
+    title="添加点检人员"
     :visible="isVisible"
     @close="closeEditDialog">
     <el-input

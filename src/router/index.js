@@ -44,7 +44,7 @@ const router = new Router({
             name: 'work-list',
             component: workList
           }, {
-            path: '/work/detail/:id',
+            path: '/work/detail/:state/:id',
             name: 'work-detail',
             component: workEdit
           }]

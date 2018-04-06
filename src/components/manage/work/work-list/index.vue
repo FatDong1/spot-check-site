@@ -176,22 +176,22 @@ export default {
       })
     },
     handleView (row) {
-      console.log(112, row)      
       this.updateWorkData(row)
       this.$router.push({
         name: 'work-detail',
         params: {
-          id: 1
+          id: 1,
+          state: 'view'
         }
       })
     },
     handleEdit (row) {
-      console.log(112, row)
       this.updateWorkData(row)      
       this.$router.push({
         name: 'work-detail',
         params: {
-          id: 1
+          id: 1,
+          state: 'edit'
         }
       })
     }
