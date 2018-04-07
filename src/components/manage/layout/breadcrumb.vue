@@ -32,8 +32,8 @@ breadcrumbConfig['company'] = { to: '/company', title: '组织架构' }
 
 breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
 breadcrumbConfig['device-add'] = { to: '/device/add', title: '新增设备' }
-// 首页模块相关面包屑
 
+breadcrumbConfig['account'] = { to: '/account', title: '账户管理' }
 
 export default {
   data () {
@@ -91,6 +91,10 @@ export default {
         case 'company':
           this.searchShow = false
           this.changeBreadcrumbOptions('home', 'company')
+          break
+        case 'account':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'account')
           break
         default:
           console.error('app-breadcrumb', 'route.name 不存在')

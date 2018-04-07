@@ -11,6 +11,7 @@ import ViewHeader from './components/common/view-layout/view-header.vue'
 import ViewContent from './components/common/view-layout/view-content.vue'
 import ViewHeaderFlex from './components/common/view-layout/view-header-flex.vue'
 import ToolBar from './components/common/toolbar/index.vue'
+import CheckHeader from './components/common/ui-component/check-header.vue'
 import RowLayout from './components/common/row-layout/index.vue'
 import { InfoDetail, InfoDetailItem } from './components/common/info-detail/index.js'
 import App from './App.vue'
@@ -26,6 +27,7 @@ Vue.component('tool-bar', ToolBar)
 Vue.component('row-layout', RowLayout)
 Vue.component('info-detail', InfoDetail)
 Vue.component('info-detail-item', InfoDetailItem)
+Vue.component('check-header', CheckHeader)
 
 Vue.prototype.$http = httpRequest
 

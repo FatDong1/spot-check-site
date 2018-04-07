@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import home from '../components/manage/home/home-page/index.vue'
 import manage from '../components/manage/index.vue'
 import login from '../components/login/index.vue'
-import userList from '../components/manage/user/userList.vue'
-import addUser from '../components/manage/user/addUser.vue'
 
 import account from '../components/manage/account/index.vue'
 
@@ -14,7 +12,9 @@ import workEdit from '../components/manage/work/work-edit/index.vue'
 
 import deviceIndex from '../components/manage/device/device-index/index.vue'
 import deviceList from '../components/manage/device/device-list/index.vue'
+import deviceCheck from '../components/manage/device/device-check/index.vue'
 import deviceAdd from '../components/manage/device/device-add/index.vue'
+
 import companyIndex from '../components/manage/company/company-index/index.vue'
 
 Vue.use(Router)
@@ -60,6 +60,10 @@ const router = new Router({
             name: 'device-list',
             component: deviceList,
           }, {
+            path: '/device/check',
+            name: 'device-check',
+            component: deviceCheck
+          }, {
             path: '/device/add',
             name: 'device-add',
             component: deviceAdd
@@ -71,48 +75,12 @@ const router = new Router({
           name: 'company',
           component: companyIndex
         },
-        // 用户管理
-        {
-          path: '/manage/user/list',
-          name: 'userList',
-          component: userList,
-          meta: [
-            {
-              name: '用户管理',
-              url: ''
-            },
-            {
-              name: '用户列表',
-              url: ''
-            }
-          ]
-        },
-        {
-          path: '/manage/user/add',
-          name: 'addUser',
-          component: addUser,
-          meta: [
-            {
-              name: '用户管理',
-              url: ''
-            },
-            {
-              name: '添加用户',
-              url: ''
-            }
-          ]
-        },
-        
+
         // 账户管理
         {
           path: '/account',
           name: 'account',
-          component: account,
-          meta: [
-            {
-              name: '账户管理'
-            }
-          ]
+          component: account
         }
       ]
     },

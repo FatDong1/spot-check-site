@@ -3,44 +3,35 @@
     label-width="120px"
     ref="deviceForm"
     :model="deviceFormData">
-    <h3 class="content-header">基本信息</h3>
+    <check-header>定点</check-header>
     <row-layout :column="3">
-      <el-form-item slot="left" prop="name" label="设备名称">
+      <el-form-item slot="left" prop="name" label="部件名称">
         <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
       </el-form-item>
-      <el-form-item slot="center" prop="department" label="所属部门">
-        <el-select v-model="deviceFormData.department" :disabled="disabled">
-          <el-option
-            v-for="item in departmentOptions"
-            :key="item.value"
-            :value="item.value"
-            :label="item.title"></el-option>
-        </el-select>
+    </row-layout>
+    <row-layout :column="3">
+      <el-form-item slot="left" prop="name" label="部件编号">
+        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
       </el-form-item>
-      <el-form-item slot="right" prop="category" label="设备类别">
+    </row-layout>
+    <row-layout :column="3">
+      <el-form-item slot="left" prop="category" label="点检要素">
         <el-input v-model="deviceFormData.category" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :column="3">
-      <el-form-item slot="left" prop="deviceModel" label="设备型号">
+      <el-form-item slot="left" prop="name" label="数据单位">
+        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
+      </el-form-item>
+    </row-layout>
+    <row-layout :span="16">
+      <el-form-item prop="deviceModel" label="可能劣化的部位">
         <el-input v-model="deviceFormData.deviceModel" :disabled="disabled"></el-input>
       </el-form-item>
-      <el-form-item slot="center" prop="serialNumber" label="出厂编号">
-        <el-input v-model="deviceFormData.serialNumber" :disabled="disabled"></el-input>
-      </el-form-item>
-      <el-form-item slot="right" prop="usePlace" label="使用地点">
+    </row-layout>
+    <row-layout :span="16">
+      <el-form-item prop="usePlace" label="检查项目">
         <el-input v-model="deviceFormData.usePlace" :disabled="disabled"></el-input>
-      </el-form-item>
-    </row-layout>
-    <row-layout :span="16">
-      <el-form-item prop="productionAddress" label="生产地址">
-        <el-input v-model="deviceFormData.productionAddress" :disabled="disabled"></el-input>
-      </el-form-item>
-    </row-layout>
-    <row-layout :span="16">
-      <!-- 备注 -->
-      <el-form-item prop="remark" label="备注">
-        <el-input type="textarea" v-model="deviceFormData.remark" :min="3" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
   </el-form>
@@ -129,10 +120,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.content-header {
-  font-size: 14px;
-  padding: 10px 0;
-}
+
 
 .customer-name-wrap {
   .el-autocomplete {

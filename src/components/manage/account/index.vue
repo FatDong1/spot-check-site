@@ -1,13 +1,16 @@
 <template>
   <view-container>
     <el-form class="account-form" :rules="rule" status-icon ref="accountForm" :model="accountForm" label-width="80px" center>
-      <el-form-item label="账户" prop="name">
+      <el-form-item label="姓名：" prop="name">
         <span>{{accountForm.name}}</span>
       </el-form-item>
-      <el-form-item label="新密码" prop="pass">
+      <el-form-item label="账户：" prop="account">
+        <span>{{accountForm.account}}</span>
+      </el-form-item>
+      <el-form-item label="新密码：" prop="pass">
         <el-input type="password" v-model="accountForm.pass"></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
+      <el-form-item label="确认密码：" prop="checkPass">
         <el-input type="password" v-model="accountForm.checkPass"></el-input>
       </el-form-item>
       <el-form-item>
@@ -44,7 +47,8 @@ export default {
       accountForm: {
         name: '小明',
         pass: '',
-        checkPass: ''
+        checkPass: '',
+        account: 'xuhaodong'
       },
       rule: {
         pass: [
@@ -54,6 +58,11 @@ export default {
           { validator: validatePass2, trigger: 'blur' }
         ]
       }
+    }
+  },
+  methods: {
+    onSubmit () {
+
     }
   }
 }

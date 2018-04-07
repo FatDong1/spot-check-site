@@ -1,13 +1,6 @@
 <template>
-  <el-dialog
-    title="添加点检人员"
-    :visible="isVisible"
-    @close="closeEditDialog">
-    <el-input
-      placeholder="输入关键字进行过滤"
-      v-model="filterText">
-    </el-input>
-
+  <div>
+    <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
     <el-tree
       class="filter-tree"
       :data="data2"
@@ -17,21 +10,22 @@
       :filter-node-method="filterNode"
       ref="tree2">
     </el-tree> 
-    <view-content-float>
-      <div slot="right">
-        <el-button @click="isVisible = false">取消</el-button> 
-        <el-button type="primary" @click="isVisible = false">确定</el-button>
-      </div>
-    </view-content-float>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    isVisible: {
-      type: Boolean,
-      required: true
+    step: {
+      type: Number
+    },
+    data: {
+      type: Object,
+      default: () => {
+        return {
+
+        }
+      }
     }
   },
   data () {
@@ -83,24 +77,23 @@ export default {
       }
     }
   },
+
   methods: {
-    closeEditDialog () {
-      this.$emit('closeEditDialog')
-    },
-
-    saveStandard () {
-
-    },
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
     }
   },
   watch: {
-      filterText(val) {
-        this.$refs.tree2.filter(val);
+    step (val) {
+      if (val === 3) {
+        this.$emit('dispatch', this.personListData)
       }
     },
+    filterText(val) {
+      this.$refs.tree2.filter(val);
+    }
+  }
 }
 </script>
 

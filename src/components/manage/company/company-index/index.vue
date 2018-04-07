@@ -9,7 +9,7 @@
       style="width: 50%">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
-        <span>
+        <span v-if="data.canAdd">
           <el-button
             type="text"
             size="mini"
@@ -25,7 +25,10 @@
         </span>
       </span>
     </el-tree>
-    <company-dialog :dialogFormVisible="dialogVisible"></company-dialog>
+    <company-dialog 
+      :dialogFormVisible="dialogVisible" 
+      @closeCompanyDialog="closeDialog"
+      @successAdd="addPerson"></company-dialog>
   </view-container>
 </template>
 
@@ -38,6 +41,7 @@ export default {
   data () {
     return {
       id: 11,
+      currentData: '',
       dialogVisible: false,
       companyData: [{
         id: 1,
@@ -45,11 +49,12 @@ export default {
         children: [{
           id: 4,
           label: '第一车间',
+          canAdd: true,
           children: [{
             id: 9,
             label: '小明'
           }, {
-            id: 10,
+            id: 10,           
             label: '小红'
           }]
         }]
@@ -58,33 +63,46 @@ export default {
         label: '第二工厂',
         children: [{
           id: 5,
-          label: '第一车间'
+          label: '第一车间',
+          canAdd: true,
         }, {
           id: 6,
-          label: '第二车间'
+          label: '第二车间',
+          canAdd: true,
         }]
       }, {
         id: 3,
         label: '第三工厂',
         children: [{
           id: 7,
-          label: '第一车间'
+          label: '第一车间',
+          canAdd: true
         }, {
           id: 8,
-          label: '第二车间'
+          label: '第二车间',
+          canAdd: true
         }]
       }]
     }
   },
   methods: {
-    append(data) {
+    closeDialog () {
+      this.dialogVisible = false
+    },
+    addPerson (form) {
       this.id = this.id + 1
-      this.dialogVisible = true
-      const newChild = { id: this.id, label: 'testtest', children: [] };
+      let data = this.currentData
+      const newChild = { id: this.id, label: form.name, children: [] };
       if (!data.children) {
         this.$set(data, 'children', []);
       }
       data.children.push(newChild);
+    },
+    append(data) {
+      this.currentData = data
+     
+      this.dialogVisible = true
+      
     },
 
     remove(node, data) {

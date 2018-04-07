@@ -19,16 +19,18 @@
         :data="workListData">
         <el-table-column type="index">
         </el-table-column>
-        <!-- <el-table-column prop="name" :label="$t('business-name')">
-          <template slot-scope="scope">
-            {{ scope.row.name }}
-            <span v-if="scope.row.status === -1" class="business-status">({{ $t('customer-approval-pending') }})</span>
-          </template>
-        </el-table-column> -->
         <el-table-column prop="name" label="设备名称"></el-table-column>
         <el-table-column prop="factory" label="设备归属"></el-table-column>
         <el-table-column prop="checkPlace" label="检查部位"></el-table-column>
         <el-table-column prop="checkContent" label="检查内容"></el-table-column>
+        <el-table-column
+          label="操作"
+          width="150">
+          <template slot-scope="scope">
+            <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="addCheck(scope.row)" type="text" size="small">添加点检</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </view-content>
     <!-- view可视框的脚部，分页组件 -->
@@ -144,6 +146,11 @@ export default {
       })
       this.$router.push({
         query
+      })
+    },
+    addCheck (row) {
+      this.$router.push({
+        name: 'device-check'
       })
     },
     addDevice () {
