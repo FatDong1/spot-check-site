@@ -14,6 +14,11 @@ import deviceIndex from '../components/manage/device/device-index/index.vue'
 import deviceList from '../components/manage/device/device-list/index.vue'
 import deviceCheck from '../components/manage/device/device-check/index.vue'
 import deviceAdd from '../components/manage/device/device-add/index.vue'
+import deviceDetail from '../components/manage/device/device-detail/index.vue'
+
+import scoreIndex from '../components/manage/score/index.vue'
+import scoreList from '../components/manage/score/score-list/index.vue'
+import scoreDetail from '../components/manage/score/score-detail/index.vue'
 
 import companyIndex from '../components/manage/company/company-index/index.vue'
 
@@ -67,7 +72,29 @@ const router = new Router({
             path: '/device/add',
             name: 'device-add',
             component: deviceAdd
+          }, {
+            path: '/device/detail',
+            name: 'device-detail',
+            component: deviceDetail
           }]
+        },
+        // 人员绩效
+        {
+          path: '/score',
+          redirect: '/score/list',
+          component: scoreIndex,
+          children: [
+            {
+              path: '/score/list',
+              name: 'score-list',
+              component: scoreList
+            },
+            {
+              path: '/score/detail',
+              name: 'score-detail',
+              component: scoreDetail
+            }
+          ]
         },
         // 组织架构管理
         {

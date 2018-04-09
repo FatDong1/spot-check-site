@@ -2,7 +2,8 @@
   <view-container>
     <view-header>新增设备</view-header>
     <el-form
-      label-width="120px"
+      class="device-form"
+      label-width="80px"
       ref="deviceForm"
       :model="deviceFormData">
       <row-layout :column="3">
@@ -90,7 +91,16 @@ export default {
       selectItem: null,
       disabled: false,
       inputDisabled: false,
-      deviceFormData: {},
+      deviceFormData: {
+        name: '',
+        department: '',
+        category: '',
+        deviceModel: '',
+        serialNumber: '',
+        usePlace: '',
+        productionAddress: '',
+        remark: ''
+      },
       departmentOptions: [{
         value: 'shejiyuanze',
         label: '第一工厂',
@@ -172,4 +182,10 @@ export default {
     color: #999999;
   }
 }
+
+.device-form {
+  margin-top: 20px;
+  padding: 10px;
+}
+
 </style>

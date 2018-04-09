@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+    <el-input style="margin-bottom: 10px" placeholder="输入用户名进行过滤" v-model="filterText"></el-input>
     <el-tree
       class="filter-tree"
       :data="data2"

@@ -2,7 +2,7 @@
   <el-form
     label-width="80px"
     :model="normData">
-    <check-header>设备定标准</check-header>
+    <check-header>定标准</check-header>
     <row-layout :span="16">
       <el-form-item prop="content" label="标准">
         <el-input v-model="normData.content" :disabled="disabled"></el-input>

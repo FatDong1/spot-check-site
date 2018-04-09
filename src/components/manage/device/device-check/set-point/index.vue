@@ -2,36 +2,31 @@
   <el-form
     label-width="120px"
     ref="deviceForm"
-    :model="deviceFormData">
+    :model="data">
     <check-header>定点</check-header>
     <row-layout :column="3">
       <el-form-item slot="left" prop="name" label="部件名称">
-        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
+        <el-input v-model="data.name" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :column="3">
-      <el-form-item slot="left" prop="name" label="部件编号">
-        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
+      <el-form-item slot="left" prop="number" label="部件编号">
+        <el-input v-model="data.number" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :column="3">
-      <el-form-item slot="left" prop="category" label="点检要素">
-        <el-input v-model="deviceFormData.category" :disabled="disabled"></el-input>
+      <el-form-item slot="left" prop="element" label="点检要素">
+        <el-input v-model="data.element" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :column="3">
-      <el-form-item slot="left" prop="name" label="数据单位">
-        <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
+      <el-form-item slot="left" prop="unit" label="数据单位">
+        <el-input v-model="data.unit" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
     <row-layout :span="16">
-      <el-form-item prop="deviceModel" label="可能劣化的部位">
-        <el-input v-model="deviceFormData.deviceModel" :disabled="disabled"></el-input>
-      </el-form-item>
-    </row-layout>
-    <row-layout :span="16">
-      <el-form-item prop="usePlace" label="检查项目">
-        <el-input v-model="deviceFormData.usePlace" :disabled="disabled"></el-input>
+      <el-form-item prop="special" label="可能劣化的部位">
+        <el-input v-model="data.special" :disabled="disabled"></el-input>
       </el-form-item>
     </row-layout>
   </el-form>
@@ -48,19 +43,10 @@ export default {
       default: () => {
         return {
           name: '',
-          registrationNumber: '',
-          industry: '',
-          region: null,
-          provinceArray: [],
-          address: '',
-          postcode: '',
-          cellphone: '',
-          fax: '',
-          roleDeptId: null,
-          companyWeb: '',
-          companyScale: '',
-          companyProfitability: '',
-          remark: ''
+          number: '',
+          element: '',
+          unit: '',
+          special: ''
         }
       }
     }

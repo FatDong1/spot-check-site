@@ -1,6 +1,6 @@
 <template>
   <view-container>
-    <view-header>设备列表</view-header>
+    <view-header>绩效列表</view-header>
     <view-content-float>
       <!--设备过滤-->
       <span class="filter-label">筛选:</span> 
@@ -10,7 +10,6 @@
         :options="deviceDepartmentData"
         filterable
       ></el-cascader>
-      <el-button slot="right" size="small" class="btn-default" icon="el-icon-plus" @click="addDevice">新增设备</el-button>
     </view-content-float>
     <!--列表  -->
     <view-content>
@@ -19,16 +18,18 @@
         :data="workListData">
         <el-table-column type="index">
         </el-table-column>
-        <el-table-column prop="name" label="设备名称"></el-table-column>
-        <el-table-column prop="factory" label="设备归属"></el-table-column>
-        <el-table-column prop="checkPlace" label="检查部位"></el-table-column>
-        <el-table-column prop="checkContent" label="检查内容"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="department" label="部门"></el-table-column>
+        <el-table-column prop="number" label="工号"></el-table-column>
+        <el-table-column prop="job" label="职位"></el-table-column>
+        <el-table-column prop="score" label="绩效评分"></el-table-column>
+        <el-table-column prop="decideDate" label="评分日期"></el-table-column>
         <el-table-column
           label="操作"
           width="150">
           <template slot-scope="scope">
             <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="addCheck(scope.row)" type="text" size="small">添加点检</el-button>
+            <el-button @click="handleModify(scope.row)" type="text" size="small">修改评分</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -49,6 +50,7 @@
 
 <script>
 import { convertTimestamp } from 'shared@/utils/common.js'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -57,22 +59,28 @@ export default {
       currentPage: 1,
       workListData: [
         {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
+          name: '小明',
+          department: '第一工厂第一车间',
+          number: '001238',
+          job: '日常点检员',
+          score: '98',
+          decideDate: '2018年3月'
         },
         {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
+          name: '小明',
+          department: '第一工厂第一车间',
+          number: '001238',
+          job: '日常点检员',
+          score: '98',
+          decideDate: '2018年3月'          
         },        
         {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
+          name: '小明',
+          department: '第一工厂第一车间',
+          number: '001238',
+          job: '日常点检员',
+          score: '98',
+          decideDate: '2018年3月'          
         }
       ],
       deviceDepartmentData: [{
@@ -111,6 +119,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('score-data', [
+      'updateScoreData'
+    ]),
     // 改变工单阶段
     changeStage (state) {
       console.log(state)
@@ -148,19 +159,22 @@ export default {
         query
       })
     },
-    addCheck (row) {
+    handleModify (row) {
+      this.updateScoreData(row)
       this.$router.push({
-        name: 'device-check'
-      })
-    },
-    addDevice () {
-      this.$router.push({
-        name: 'device-add'
+        name: 'score-detail',
+        query: {
+          state: 'modify'
+        }
       })
     },
     handleView (row) {
+      this.updateScoreData(row)
       this.$router.push({
-        name: 'device-detail'
+        name: 'score-detail',
+        query: {
+          state: 'view'
+        }
       })
     }
   }
