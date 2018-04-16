@@ -3,13 +3,6 @@
  */
 
 export default {
-  accessToken: '',
-  accessTokenHeader: null,
-  userInfo: {
-    userId: '',
-    name: '',
-    avatar: ''
-  },
-  pageHeight: 0,
-  pageSize: 10
+  loading: false,
+  isAdmin: false
 }

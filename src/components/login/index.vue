@@ -3,43 +3,71 @@
     <p class="login__title">设备点检系统</p>
     <el-form ref="form" :model="form" label-width="50px">
       <el-form-item label="账号">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model="form.account"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password" @keyup.enter.native="signIn"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button
           type="primary"
           class="sign-btn"
           :disabled="form.disabled"
-          @click="signIn">登录</el-button>
+          @click="signIn">{{ buttonText }}</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      buttonText: '登录',
       form: {
-        name: '',
+        account: '',
         password: '',
         disabled: false
       }
     }
   },
   methods: {
+    ...mapMutations([
+      'updateFlag'
+    ]),
     signIn () {
-      if (!this.form.name) {
-        alert('账号不能为空!')
+      if (!this.form.account) {
+        this.$message({
+          type: 'warning',
+          message: '账号不能为空!'
+        })
       } else if (!this.form.password) {
-        alert('密码不能为空')
+        this.$message({
+          type: 'warning',
+          message: '密码不能为空!'
+        })
       }
-      // this.form.disabled = true
-      sessionStorage.setItem('CODE', 123)
-      this.$router.push({name: 'home'})
+      this.buttonText = '正在登录中......'
+      this.form.disabled = true
+      this.$http({
+        method: 'post',
+        data: this.form,
+        url: '/api/login'
+      }).then((result) => {
+        let flag = result.value[0].isAdmin === 0 ? false : true
+        sessionStorage.setItem('user', JSON.stringify(result.value[0]))
+        this.updateFlag(flag)
+        this.buttonText = '登录成功'
+        this.$router.push({name: 'home'})
+      }).catch((error) => {
+        this.buttonText = '登录'
+        this.form.disabled = false
+        this.$message({
+          type: 'error',
+          message: error.msg
+        })
+      })
     }
   }
 }

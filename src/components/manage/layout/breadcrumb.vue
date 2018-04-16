@@ -111,7 +111,8 @@ export default {
           this.changeBreadcrumbOptions('home', 'score-list', 'score-detail')
           break
         case 'company':
-          this.searchShow = false
+          this.searchShow = true
+          this.searchPlaceholder = '请输入人员名称'
           this.changeBreadcrumbOptions('home', 'company')
           break
         case 'account':

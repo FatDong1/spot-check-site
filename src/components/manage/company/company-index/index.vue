@@ -2,21 +2,26 @@
   <view-container>
     <view-header>公司组织架构</view-header>
     <el-tree
+      ref="companyTree"
+      v-loading="loading"
       :data="companyData"
       node-key="id"
       default-expand-all
+      :filter-node-method="filterNode"
       :expand-on-click-node="false"
       style="width: 50%">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
-        <span v-if="data.canAdd">
+        <span>
           <el-button
+            v-if="data.canAdd"
             type="text"
             size="mini"
-            @click="() => append(data)">
+            @click="() => append(node, data)">
             添加
           </el-button>
           <el-button
+            v-if="data.canDel"
             type="text"
             size="mini"
             @click="() => remove(node, data)">
@@ -25,7 +30,8 @@
         </span>
       </span>
     </el-tree>
-    <company-dialog 
+    <company-dialog
+      v-if="dialogVisible"
       :dialogFormVisible="dialogVisible" 
       @closeCompanyDialog="closeDialog"
       @successAdd="addPerson"></company-dialog>
@@ -33,13 +39,16 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import CompanyDialog from '../company-dialog/index.vue'
+
 export default {
   components: {
     CompanyDialog
   },
   data () {
     return {
+      loading: '',
       id: 11,
       currentData: '',
       dialogVisible: false,
@@ -47,8 +56,20 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('company-data', [
+      'updateCompanyData'
+    ]),
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
     fetchCompany () {
-      this.$http('/api/users').then((result) => {
+      this.loading = true
+      this.$http({
+        method: 'get',
+        url: '/api/users' 
+      }).then((result) => {
+        this.loading = false
         let temp = [{
           id: 1,
           label: '第一工厂',
@@ -92,12 +113,11 @@ export default {
             children: []
           }]
         }]
-        console.log(temp[1])
         result.value.forEach((element) => {
-          console.log(element)
           let tempObj = {
             id: element.id,
-            label: element.name
+            label: element.name,
+            canDel: true
           }
           if (element.factory === '第一工厂') {
             if (element.plant === '第一车间') {
@@ -119,7 +139,6 @@ export default {
             }
           }
         })
-        console.log(temp)
         this.companyData = temp
       })
     },
@@ -127,18 +146,16 @@ export default {
     closeDialog () {
       this.dialogVisible = false
     },
-    addPerson (form) {
-      this.id = this.id + 1
-      let data = this.currentData
-      const newChild = { id: this.id, label: form.name, children: [] };
-      if (!data.children) {
-        this.$set(data, 'children', []);
-      }
-      data.children.push(newChild);
+    addPerson () {
+      this.fetchCompany()
     },
-    append(data) {
+    append(node, data) {
+      let obj = {
+        factory: node.parent.data.label,
+        plant: data.label
+      }
+      this.updateCompanyData(obj)
       this.currentData = data
-     
       this.dialogVisible = true
       
     },
@@ -149,13 +166,18 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        const parent = node.parent
-        const children = parent.data.children || parent.data
-        const index = children.findIndex(d => d.id === data.id)
-        children.splice(index, 1)
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
+        this.$http({
+          method: 'delete',
+          url: '/api/user',
+          params: {
+            id: data.id
+          }
+        }).then((data) => {
+          this.$message({
+            type: 'success',
+            message: data.msg
+          })
+          this.fetchCompany()
         })
       }).catch(() => {
         this.$message({
@@ -163,6 +185,11 @@ export default {
           message: '已取消删除'
         })       
       })
+    }
+  },
+  watch: {
+    $route (val) {
+      this.$refs.companyTree.filter(val.query.searchFilter)
     }
   },
   created () {

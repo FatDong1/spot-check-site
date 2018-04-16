@@ -12,7 +12,7 @@
     <el-menu-item index="2">CTC</el-menu-item> -->
     <el-dropdown class="header-user-area" trigger="click">
       <div class="header-user">
-        <span class="user-name">许浩东</span>
+        <span class="user-name">{{ name }}</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
@@ -24,12 +24,16 @@
 
 <script>
 export default {
+  computed: {
+    name: () => {
+      let result = JSON.parse(sessionStorage.getItem('user'))
+      return result.name
+    }
+  },
   methods: {
-    handleCommand (command) {
-      if (command === 'a') {
-        this.$storage.remove('CODE')
-        this.$router.push({name: 'login'})
-      }
+    userLogout () {
+      sessionStorage.removeItem('user')
+      this.$router.push({name: 'login'})
     }
   }
 }

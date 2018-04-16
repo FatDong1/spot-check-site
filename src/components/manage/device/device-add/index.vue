@@ -57,32 +57,6 @@
 
 <script>
 export default {
-  props: {
-    step: {
-      type: Number
-    },
-    data: {
-      type: Object,
-      default: () => {
-        return {
-          name: '',
-          registrationNumber: '',
-          industry: '',
-          region: null,
-          provinceArray: [],
-          address: '',
-          postcode: '',
-          cellphone: '',
-          fax: '',
-          roleDeptId: null,
-          companyWeb: '',
-          companyScale: '',
-          companyProfitability: '',
-          remark: ''
-        }
-      }
-    }
-  },
   data () {
     return {
       regionOption: [],
@@ -138,7 +112,21 @@ export default {
   },
   methods: {
     saveDevice () {
-
+      this.$http({
+        method: 'post',
+        url: '/api/device',
+        data: this.deviceFormData
+      }).then((result) => {
+        this.$message({
+          type: 'success',
+          message: result.msg
+        })
+      }).catch((error) => {
+        this.$message({
+          type: 'error',
+          message: error.msg
+        })
+      })
     }
   }
 }

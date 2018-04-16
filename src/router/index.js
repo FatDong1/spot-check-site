@@ -120,7 +120,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let code = sessionStorage.getItem('CODE') || false
+  let code = sessionStorage.getItem('user') || false
   if (code && to.name === 'login') {
     next({name: 'home'})
   } else if (!code && to.name === 'login') {

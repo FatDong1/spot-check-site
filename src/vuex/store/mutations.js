@@ -4,17 +4,10 @@
 
 
 export default {
-  changeAccessToken (state, token) {
-    state.accessToken = token
+  updateLoading (state, loading) {
+    state.loading = loading
   },
-  changeAccessTokenHeader (state, header) {
-    state.accessTokenHeader = header
-  },
-  changeUserInfo (state, data) {
-    if (data) {
-      state.userInfo.name = data.cn
-      state.userInfo.avatar = data.headImgUrl
-      state.userInfo.userId = data.username
-    }
+  updateFlag (state, flag) {
+    state.flag = flag
   }
 }

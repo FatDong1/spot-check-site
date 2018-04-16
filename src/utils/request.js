@@ -56,12 +56,11 @@ function httpRequest (request) {
             // 后端请求发送成功
             resolve(response.data.data)
           } else if (response.data.code === -1) {
-            // window.alert(response.data.errorMsg)
-            reject()
+            reject(response.data.data)
           }
         } else {
           // window.alert('response status error: ', response.status)
-          reject()
+          reject(response.data.data)
         }
       })
       .catch(function (error) {

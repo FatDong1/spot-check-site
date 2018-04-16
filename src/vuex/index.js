@@ -7,9 +7,9 @@ import state from './store/state'
 import mutations from './store/mutations'
 import actions from './store/actions'
 
-// 商机
 import workDataStore from '../components/manage/work/store/index'
 import scoreDataStore from '../components/manage/score/store/index'
+import companyDataStore from '../components/manage/company/store/index'
 
 Vue.use(Vuex)
 
@@ -22,5 +22,6 @@ store.modules = {}
 
 store.modules['work-data'] = workDataStore
 store.modules['score-data'] = scoreDataStore
+store.modules['company-data'] = companyDataStore
 
 export default new Vuex.Store(store)
