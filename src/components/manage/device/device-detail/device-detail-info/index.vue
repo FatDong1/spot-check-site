@@ -5,13 +5,13 @@
         slot="left"
         :label-width="labelWidth"
         label="设备名称">
-        {{ deviceFormData.name }}
+        {{ deviceListData.name }}
       </info-detail-item>
       <info-detail-item
         slot="right"
         :label-width="labelWidth"
         label="所属部门">
-        {{ deviceFormData.department }}
+        {{ deviceListData.department }}
       </info-detail-item>
     </row-layout>
     <row-layout :column="2">
@@ -19,13 +19,13 @@
         slot="left"
         :label-width="labelWidth"
         label="设备种类">
-        {{ deviceFormData.category }}
+        {{ deviceListData.category }}
       </info-detail-item>
       <info-detail-item
         slot="right"
         :label-width="labelWidth"
         label="设备型号">
-        {{ deviceFormData.deviceModel }}
+        {{ deviceListData.deviceModel }}
       </info-detail-item>
     </row-layout>
     <row-layout :column="2">
@@ -33,48 +33,44 @@
         slot="left"
         :label-width="labelWidth"
         label="出厂编号">
-        {{ deviceFormData.serialNumber }}
+        {{ deviceListData.serialNumber }}
       </info-detail-item>
       <info-detail-item
         slot="right"
         :label-width="labelWidth"
         label="使用地点">
-        {{ deviceFormData.usePlace }}
+        {{ deviceListData.usePlace }}
       </info-detail-item>
     </row-layout>
     <row-layout :column="1">
       <info-detail-item
         :label-width="labelWidth"
         label="生产地址">
-        {{ deviceFormData.productionAddress }}
+        {{ deviceListData.productionAddress }}
       </info-detail-item>
     </row-layout>
     <row-layout :column="1">
       <info-detail-item
         :label-width="labelWidth"
         label="备注">
-        {{ deviceFormData.remark }}
+        {{ deviceListData.remark }}
       </info-detail-item>
     </row-layout>
   </info-detail>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      labelWidth: '100px',
-      deviceFormData: {
-        name: '',
-        department: '',
-        category: '',
-        deviceModel: '',
-        serialNumber: '',
-        usePlace: '',
-        productionAddress: '',
-        remark: ''
-      }
+      labelWidth: '100px'
     }
+  },
+  computed: {
+    ...mapState('device-data', [
+      'deviceData'
+    ])
   }
 }
 </script>

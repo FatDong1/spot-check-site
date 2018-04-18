@@ -5,5 +5,8 @@ export default {
       plant: payload.plant,
       factory: payload.factory
     }
+  },
+  updateCompanyPerson (state, payload) {
+    state.companyPerson = payload
   }
 }

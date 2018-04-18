@@ -1,16 +1,20 @@
 <template>
   <el-form
     label-width="80px"
-    :model="cycleData">
+    :rules="rules"
+    ref="cycleDom"
+    :model="data">
     <check-header>定周期</check-header>
     <row-layout :span="16">
-      <el-form-item prop="content" label="周期">
-        <el-input v-model="cycleData.cycle" :disabled="disabled"></el-input>
-      </el-form-item>
-    </row-layout>
-    <row-layout :span="16">
-      <el-form-item prop="remark" label="备注">
-        <el-input type="textarea" rows="2" v-model="cycleData.reamrk" :disabled="disabled"></el-input>
+      <el-form-item prop="cycle" label="周期">
+        <el-select v-model="data.cycle" placeholder="请选择" @change="handleChange">
+          <el-option
+            v-for="item in options"
+            :key="item.label"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
     </row-layout>
   </el-form>
@@ -23,45 +27,40 @@ export default {
       type: Number
     },
     data: {
-      type: Object,
-      default: () => {
-        return {
-
-        }
-      }
+      type: Object
     }
   },
   data () {
     return {
-      isVisible: false,
-      editIndex: 0,
-      cycleData: {
-        cycle: '',
-        remark: ''
-      }
+      rules: {
+        cycle: [
+          {  required: true, message: '请输入点检周期', trigger: 'blur'  }
+        ]
+      },
+      options: [{
+        value: 1,
+        label: '每天'
+      }, {
+        value: 7,
+        label: '每周'
+      }, {
+        value: 30,
+        label: '每月'
+      }]
     }
   },
   computed: {
-    standardData () {
-      return this.placeListData[this.editIndex].standard || []
-    }
+
   },
   methods: {
-    closeEditDialog () {
-      this.isVisible = false
-    },
-    addStandard (index, row) {
-      this.isVisible = true
-      this.editIndex = index
-    },
-    handleDialogChange () {
-      // 重新获取数据
+    handleChange (value) {
+      console.log(value)
     }
   },
   watch: {
-    step (val) {
-      if (val === 2 || val === 4) {
-        this.$emit('dispatch', this.placeListData)
+    step (curVal, oldVal) {
+      if (oldVal === 3) {
+        this.$emit('dispatch', this.data, this.$refs.cycleDom)
       }
     }
   }

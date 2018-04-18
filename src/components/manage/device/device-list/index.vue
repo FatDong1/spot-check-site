@@ -5,24 +5,29 @@
       <!--设备过滤-->
       <span class="filter-label">筛选:</span> 
       <el-cascader
-        placeholder="试试搜索"
+        placeholder="选择设备的归属车间"
         size="small"
+        v-model="filterDept"
+        @change="handeFilterDept"
         :options="deviceDepartmentData"
         filterable
       ></el-cascader>
+      <el-button size="small" class="btn-default" @click="clearFilter">清空</el-button>
       <el-button slot="right" size="small" class="btn-default" icon="el-icon-plus" @click="addDevice">新增设备</el-button>
     </view-content-float>
     <!--列表  -->
     <view-content>
       <el-table
         stripe
-        :data="workListData">
+        :data="deviceListData">
         <el-table-column type="index">
         </el-table-column>
         <el-table-column prop="name" label="设备名称"></el-table-column>
-        <el-table-column prop="factory" label="设备归属"></el-table-column>
-        <el-table-column prop="checkPlace" label="检查部位"></el-table-column>
-        <el-table-column prop="checkContent" label="检查内容"></el-table-column>
+        <el-table-column prop="department" label="设备归属"></el-table-column>
+        <el-table-column prop="category" label="设备归类"></el-table-column>
+        <el-table-column prop="serialNumber" label="出厂编号"></el-table-column>
+        <el-table-column prop="usePlace" label="使用地点"></el-table-column>
+        <el-table-column prop="productionAddress" label="生产地址"></el-table-column>
         <el-table-column
           label="操作"
           width="150">
@@ -36,6 +41,7 @@
     <!-- view可视框的脚部，分页组件 -->
      <view-content-float>
       <el-pagination
+        v-if="showFooter"
         slot="right"
         layout="total, prev, pager, next, jumper"
         :page-size="10"
@@ -49,68 +55,53 @@
 
 <script>
 import { convertTimestamp } from 'shared@/utils/common.js'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
+      showFooter: true,
       pageTotal: null,
       currentPage: 1,
-      workListData: [
-        {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
-        },
-        {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
-        },        
-        {
-          name: '车床',
-          factory: '第一工厂第一车间',
-          checkPlace: '头部',
-          checkContent: '点检的内容'
-        }
-      ],
+      filterDept: [],
+      deviceListData: [],
       deviceDepartmentData: [{
-        value: 'shejiyuanze',
+        value: '第一工厂',
         label: '第一工厂',
         children: [{
-          value: 'yizhi',
+          value: '第一车间',
           label: '第一车间'
         }, {
-          value: 'fankui',
+          value: '第二车间',
           label: '第二车间'
-        }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
         }]
       }, {
-        value: 'shejiyuanze',
+        value: '第二工厂',
         label: '第二工厂',
         children: [{
-          value: 'yizhi',
+          value: '第一车间',
           label: '第一车间'
         }, {
-          value: 'fankui',
+          value: '第二车间',
           label: '第二车间'
+        }]
+      },{
+        value: '第三工厂',
+        label: '第三工厂',
+        children: [{
+          value: '第一车间',
+          label: '第一车间'
         }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
+          value: '第二车间',
+          label: '第二车间'
         }]
       }]
     }
   },
   methods: {
+    ...mapMutations('device-data', [
+      'updateDeviceData'
+    ]),
     // 改变工单阶段
     changeStage (state) {
       console.log(state)
@@ -141,14 +132,10 @@ export default {
     },
     // 当页数改变执行的函数
     changePageIndex (pageIndex) {
-      let query = Object.assign({}, this.$route.query, {
-        pageIndex
-      })
-      this.$router.push({
-        query
-      })
+      this.fetchDevicePage(pageIndex)
     },
     addCheck (row) {
+      this.updateDeviceData(row)
       this.$router.push({
         name: 'device-check'
       })
@@ -159,10 +146,66 @@ export default {
       })
     },
     handleView (row) {
+      this.updateDeviceData(row)
       this.$router.push({
         name: 'device-detail'
       })
+    },
+    handeFilterDept (value) {
+      if (value.length) {
+        let department = value.join('')
+        this.fetchDeviceDept(department)
+        this.showFooter = false
+      }
+    },
+    clearFilter () {
+      this.filterDept = []
+      this.fetchDevicePage(1)
+      this.showFooter = true
+    },
+    fetchDeviceDept (dept) {
+      this.$http({
+        method: 'get',
+        url: '/api/devices/dept',
+        params: {
+          department: dept
+        }
+      }).then((result) => {
+        this.deviceListData = result.value
+      })
+    },
+    fetchDevicePage (page) {
+      this.$http({
+        method: 'get',
+        url: '/api/devices',
+        params: {
+          page: page
+        }
+      }).then((result) => {
+        this.deviceListData = result.value
+      })
     }
+  },
+  watch: {
+    $route (route) {
+      if (route.query.searchFilter) {
+        this.$http({
+          method: 'get',
+          url: '/api/devices/name',
+          params: {
+            name: route.query.searchFilter
+          }
+        }).then((result) => {
+          this.deviceListData = result.value
+          this.showFooter = false
+        })
+      } else {
+        this.fetchDevicePage(1)
+      }
+    }
+  },
+  created () {
+    this.fetchDevicePage(1)
   }
 }
 </script>

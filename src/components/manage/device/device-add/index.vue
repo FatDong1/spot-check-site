@@ -11,13 +11,8 @@
           <el-input v-model="deviceFormData.name" :disabled="disabled"></el-input>
         </el-form-item>
         <el-form-item slot="center" prop="department" label="所属部门">
-          <el-select v-model="deviceFormData.department" :disabled="disabled">
-            <el-option
-              v-for="item in departmentOptions"
-              :key="item.value"
-              :value="item.value"
-              :label="item.title"></el-option>
-          </el-select>
+          <el-cascader :options="departmentOptions" v-model="deviceFormData.department">
+          </el-cascader>
         </el-form-item>
         <el-form-item slot="right" prop="category" label="设备类别">
           <el-input v-model="deviceFormData.category" :disabled="disabled"></el-input>
@@ -67,7 +62,7 @@ export default {
       inputDisabled: false,
       deviceFormData: {
         name: '',
-        department: '',
+        department: [],
         category: '',
         deviceModel: '',
         serialNumber: '',
@@ -76,36 +71,34 @@ export default {
         remark: ''
       },
       departmentOptions: [{
-        value: 'shejiyuanze',
+        value: '第一工厂',
         label: '第一工厂',
         children: [{
-          value: 'yizhi',
+          value: '第一车间',
           label: '第一车间'
         }, {
-          value: 'fankui',
+          value: '第二车间',
           label: '第二车间'
-        }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
         }]
       }, {
-        value: 'shejiyuanze1',
+        value: '第二工厂',
         label: '第二工厂',
         children: [{
-          value: 'yizhi',
+          value: '第一车间',
           label: '第一车间'
         }, {
-          value: 'fankui',
+          value: '第二车间',
           label: '第二车间'
+        }]
+      },{
+        value: '第三工厂',
+        label: '第三工厂',
+        children: [{
+          value: '第一车间',
+          label: '第一车间'
         }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
+          value: '第二车间',
+          label: '第二车间'
         }]
       }]
     }
@@ -120,6 +113,9 @@ export default {
         this.$message({
           type: 'success',
           message: result.msg
+        })
+        this.$router.push({
+          name: 'device-list'
         })
       }).catch((error) => {
         this.$message({

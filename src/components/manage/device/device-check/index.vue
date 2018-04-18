@@ -17,29 +17,32 @@
     <view-content padding="20px 10px">
       <set-point
         v-show="currentActive === 0"
-        :data="baseInfoData"
+        :data="pointData"
         :step="stepActive"
-        @dispatch="handleBaseInfoDispatch"></set-point>
+        @dispatch="handlePointDispatch"></set-point>
       <set-norm 
         v-show="currentActive === 1"
         :step="stepActive"
-        :data="placeData"
-        @dispatch="handleSetPlaceDispatch">
+        :data="normData"
+        @dispatch="handleNormDispatch">
       </set-norm>
       <set-method 
         v-show="currentActive === 2"
         :step="stepActive"
-        @dispatch="handleSetStandardDispatch">
+        :data="methodData"
+        @dispatch="handleMethodDispatch">
       </set-method>
       <set-cycle 
         v-show="currentActive === 3"
         :step="stepActive"
-        @dispatch="handleSetCycleDispatch">
+        :data="cycleData"
+        @dispatch="handleCycleDispatch">
       </set-cycle>
       <set-person 
         v-show="currentActive === 4"
-        :step="stepActive"
-        @dispatch="handleSetPersonDispatch">
+        :send="send"
+        :data="personData"
+        @dispatch="handlePersonDispatch">
       </set-person>
     </view-content>
     <tool-bar>
@@ -69,6 +72,7 @@ import SetNorm from './set-norm/index.vue'
 import SetMethod from './set-method/index.vue'
 import SetPerson from './set-person/index.vue'
 import SetCycle from './set-cycle/index.vue'
+import { mapMutations, mapState } from 'vuex'
 export default {
   components: {
     SetPoint,
@@ -81,45 +85,117 @@ export default {
     return {
       stepType: 'next',
       stepActive: 0,
+      send: 0,
       currentActive: 0,
-      baseInfoData: {
-        name: ''
+      pointData: {
+        name: '',
+        number: '',
+        element: '',
+        special: ''
       },
-      placeData: {
-
-      }
+      normData: {
+        norm: '',
+        unit: ''
+      },
+      methodData: {
+        method: '',
+        tool: ''
+      },
+      cycleData: {
+        cycle: ''
+      },
+      personData: []
     }
   },
+  computed: {
+    ...mapState('device-data', [
+      'deviceData'
+    ])
+  },
   methods: {
-    handleBaseInfoDispatch (data, node) {
-      this.currentActive = this.stepActive
-      // if (this.stepType === 'next') {
-      //   node.validate(valid => {
-      //     console.log(valid)
-      //     if (valid) {
-      //       this.updateCustomerForm(data)
-      //       this.currentActive = this.stepActive
-      //     } else {
-      //       this.resetStep()
-      //       return false
-      //     }
-      //   })
-      // } else {
-      //   this.updateCustomerForm(data)
-      //   this.currentActive = this.stepActive
-      // }
+    updatePointData (data) {
+      this.pointData = data
     },
-    handleSetPlaceDispatch () {
-       this.currentActive = this.stepActive
+    updateNormData (data) {
+      this.normData = data
     },
-    handleSetStandardDispatch () {
-       this.currentActive = this.stepActive      
+    updateMethodData (data) {
+      this.methodData = data
     },
-    handleSetPersonDispatch () {
-       this.currentActive = this.stepActive      
+    updateCycleData (data) {
+      this.cycleData = data
     },
-    handleSetCycleDispatch () {
-       this.currentActive = this.stepActive
+    updatePersonData (data) {
+      this.personData = data
+    },
+    handlePointDispatch (data, node) {
+      if (this.stepType === 'next') {
+        node.validate(valid => {
+          if (valid) {
+            this.updatePointData(data)
+            this.currentActive = this.stepActive
+            console.log(this.stepActive)
+          } else {
+            this.resetStep()
+            return false
+          }
+        })
+      } else {
+        this.updatePointData(data)
+        this.currentActive = this.stepActive
+      }
+    },
+    handleNormDispatch (data, node) {
+      if (this.stepType === 'next') {
+        node.validate(valid => {
+          if (valid) {
+            this.updateNormData(data)
+            this.currentActive = this.stepActive
+          } else {
+            this.resetStep()
+            return false
+          }
+        })
+      } else {
+        this.updateNormData(data)
+        this.currentActive = this.stepActive
+      }
+    },
+    handleMethodDispatch (data, node) {
+      if (this.stepType === 'next') {
+        node.validate(valid => {
+          if (valid) {
+            this.updateMethodData(data)
+            this.currentActive = this.stepActive
+          } else {
+            this.resetStep()
+            return false
+          }
+        })
+      } else {
+        this.updateMethodData(data)
+        this.currentActive = this.stepActive
+      }    
+    },
+    handlePersonDispatch (data) {
+      this.updatePersonData(data)      
+      this.currentActive = this.stepActive      
+    },
+    handleCycleDispatch (data, node) {
+      if (this.stepType === 'next') {
+        node.validate(valid => {
+          if (valid) {
+            this.updateCycleData(data)
+            this.currentActive = this.stepActive
+          } else {
+            this.resetStep()
+            return false
+          }
+        })
+      } else {
+        this.updateCycleData(data)
+        this.currentActive = this.stepActive
+      }    
     },
     /**
      * 下一步 按钮点击事件
@@ -139,9 +215,19 @@ export default {
      * 提交按钮点击事件
      */
     handleSubmit () {
-      // 发送send信号
-      // 将联系人组件列表状态 dispatch 到本组件
       this.send++
+      this.$nextTick(() => {
+        let result = Object.assign({}, this.pointData, this.normData, this.methodData, this.cycleData)
+        result['checkerId'] = this.personData
+        result['deviceId'] = this.deviceData.id
+      })
+    },
+    resetStep () {
+      if (this.stepType === 'next') {
+        this.stepActive--
+      } else if (this.stepType === 'prev') {
+        this.stepActive++
+      }
     },
   }
 }

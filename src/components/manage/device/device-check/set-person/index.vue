@@ -1,102 +1,64 @@
 <template>
   <div>
-    <el-input style="margin-bottom: 10px" placeholder="输入用户名进行过滤" v-model="filterText"></el-input>
+    <el-input style="margin-bottom: 10px" placeholder="输入用户名进行过滤" v-model="filterText" @keyup.enter.native="test"></el-input>
     <el-tree
       class="filter-tree"
-      :data="data2"
+      node-key="id"
+      :data="companyPerson"
       show-checkbox
-      :props="defaultProps"
+      highlight-current
       default-expand-all
       :filter-node-method="filterNode"
-      ref="tree2">
+      ref="personDom">
     </el-tree> 
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
-    step: {
+    send: {
       type: Number
     },
     data: {
-      type: Object,
-      default: () => {
-        return {
-
-        }
-      }
+      type: Array
     }
   },
   data () {
     return {
       filterText: '',
-      data2: [{
-        id: 1,
-        label: '第一车间',
-        children: [{
-          id: 4,
-          label: '第一工厂',
-          children: [{
-            id: 9,
-            label: '小明'
-          }, {
-            id: 10,
-            label: '小红'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '第二车间',
-        children: [{
-          id: 5,
-          label: '第一工厂',
-          children: [{
-            id: 100,
-            label: '小红'
-          }, {
-            id: 101,
-            label: '小哈哈'
-          }]
-        }]
-      }, {
-        id: 3,
-        label: '第三车间',
-        children: [{
-          id: 7,
-          label: '第一工厂',
-          children: [{
-            id: 102,
-            label: '小兰'
-          }]
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
     }
   },
-
+  computed: {
+    ...mapState('company-data', [
+      'companyPerson'
+    ])
+  },
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
+    },
+    test () {
+      console.log(this.$refs.personDom.getCheckedKeys());
+      console.log(this.$refs.personDom.getCheckedNodes())
     }
   },
   watch: {
-    step (val) {
-      if (val === 3) {
-        this.$emit('dispatch', this.personListData)
-      }
+    send (curVal, oldVal) {
+      let arr = this.$refs.personDom.getCheckedNodes()
+      let result = []
+      arr.forEach(function (element) {
+        if (!element.children) {
+          result.push(element.id)
+        }
+      })
+      this.$emit('dispatch', result)
     },
     filterText(val) {
-      this.$refs.tree2.filter(val);
+      this.$refs.personDom.filter(val);
     }
   }
 }
 </script>
-
-<style>
-
-</style>

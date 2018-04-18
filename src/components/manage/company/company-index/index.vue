@@ -57,7 +57,8 @@ export default {
   },
   methods: {
     ...mapMutations('company-data', [
-      'updateCompanyData'
+      'updateCompanyData',
+      'updateCompanyPerson'
     ]),
     filterNode(value, data) {
       if (!value) return true;
@@ -139,6 +140,7 @@ export default {
             }
           }
         })
+        this.updateCompanyPerson(temp)
         this.companyData = temp
       })
     },
