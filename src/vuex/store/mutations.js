@@ -9,5 +9,8 @@ export default {
   },
   updateFlag (state, flag) {
     state.flag = flag
+  },
+  updateCompanyData (state, payload) {
+    state.companyData = payload
   }
 }

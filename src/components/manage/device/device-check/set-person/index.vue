@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-input style="margin-bottom: 10px" placeholder="输入用户名进行过滤" v-model="filterText" @keyup.enter.native="test"></el-input>
+    <el-input style="margin-bottom: 10px" placeholder="输入用户名进行过滤" v-model="filterText"></el-input>
     <el-tree
       class="filter-tree"
       node-key="id"
-      :data="companyPerson"
+      :data="companyData"
       show-checkbox
       highlight-current
       default-expand-all
@@ -21,6 +21,9 @@ export default {
     send: {
       type: Number
     },
+    step: {
+      type: Number
+    },
     data: {
       type: Array
     }
@@ -31,18 +34,14 @@ export default {
     }
   },
   computed: {
-    ...mapState('company-data', [
-      'companyPerson'
+    ...mapState([
+      'companyData'
     ])
   },
   methods: {
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
-    },
-    test () {
-      console.log(this.$refs.personDom.getCheckedKeys());
-      console.log(this.$refs.personDom.getCheckedNodes())
     }
   },
   watch: {
@@ -55,6 +54,18 @@ export default {
         }
       })
       this.$emit('dispatch', result)
+    },
+    step (curVal, oldVal) {
+      if (oldVal === 4) {
+        let arr = this.$refs.personDom.getCheckedNodes()
+        let result = []
+        arr.forEach(function (element) {
+          if (!element.children) {
+            result.push(element.id)
+          }
+        })
+        this.$emit('dispatch', result)
+      }
     },
     filterText(val) {
       this.$refs.personDom.filter(val);

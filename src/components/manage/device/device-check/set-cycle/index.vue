@@ -6,7 +6,16 @@
     :model="data">
     <check-header>定周期</check-header>
     <row-layout :span="16">
-      <el-form-item prop="cycle" label="周期">
+      <el-form-item prop="startDate" label="开始日期">
+        <el-date-picker
+          v-model="data.startDate"
+          type="date"
+          placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
+    </row-layout>
+    <row-layout :span="16">
+      <el-form-item prop="cycle" label="点检周期">
         <el-select v-model="data.cycle" placeholder="请选择" @change="handleChange">
           <el-option
             v-for="item in options"
@@ -35,6 +44,9 @@ export default {
       rules: {
         cycle: [
           {  required: true, message: '请输入点检周期', trigger: 'blur'  }
+        ],
+        startDate: [
+          { required: true, message: '请输入开始日期', trigger: 'blur' }
         ]
       },
       options: [{

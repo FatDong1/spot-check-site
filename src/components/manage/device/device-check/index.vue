@@ -41,6 +41,7 @@
       <set-person 
         v-show="currentActive === 4"
         :send="send"
+        :step="stepActive"
         :data="personData"
         @dispatch="handlePersonDispatch">
       </set-person>
@@ -102,7 +103,8 @@ export default {
         tool: ''
       },
       cycleData: {
-        cycle: ''
+        cycle: '',
+        startDate: new Date()
       },
       personData: []
     }
@@ -134,7 +136,6 @@ export default {
           if (valid) {
             this.updatePointData(data)
             this.currentActive = this.stepActive
-            console.log(this.stepActive)
           } else {
             this.resetStep()
             return false
@@ -178,8 +179,10 @@ export default {
       }    
     },
     handlePersonDispatch (data) {
-      this.updatePersonData(data)      
-      this.currentActive = this.stepActive      
+      this.updatePersonData(data)
+      if (this.stepType === 'prev') {
+        this.currentActive--
+      }
     },
     handleCycleDispatch (data, node) {
       if (this.stepType === 'next') {
@@ -209,7 +212,7 @@ export default {
      */
     handlePrevStepClick () {
       this.stepType = 'prev'
-      this.stepActive--
+      this.stepActive-- 
     },
     /**
      * 提交按钮点击事件
@@ -220,6 +223,21 @@ export default {
         let result = Object.assign({}, this.pointData, this.normData, this.methodData, this.cycleData)
         result['checkerId'] = this.personData
         result['deviceId'] = this.deviceData.id
+        this.$http({
+          method: 'post',
+          url: '/api/check',
+          data: result
+        }).then((result) => {
+          this.$message({
+            type: 'success',
+            message: result.msg
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'error',
+            message: '点检添加失败'
+          })
+        })
       })
     },
     resetStep () {

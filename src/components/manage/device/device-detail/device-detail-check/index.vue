@@ -6,15 +6,16 @@
       :data="checkListData">
       <el-table-column type="index">
       </el-table-column>
-      <el-table-column prop="name" label="设备名称"></el-table-column>
-      <el-table-column prop="number" label="工单状态"></el-table-column>
-      <el-table-column prop="element" label="设备归属"></el-table-column>
-      <el-table-column prop="unit" label="检查部位"></el-table-column>
-      <el-table-column prop="special" label="检查内容"></el-table-column>
-      <el-table-column prop="norm" label="设备名称"></el-table-column>
-      <el-table-column prop="method" label="工单状态"></el-table-column>
-      <el-table-column prop="cycle" label="检查部位"></el-table-column>        
-      <el-table-column prop="checker" label="设备归属"></el-table-column>
+      <el-table-column prop="name" label="部件名称"></el-table-column>
+      <el-table-column prop="number" label="部件编号"></el-table-column>
+      <el-table-column prop="element" label="点检要素"></el-table-column>
+      <el-table-column prop="unit" label="数据单位"></el-table-column>
+      <el-table-column prop="special" label="可能劣化的部位"></el-table-column>
+      <el-table-column prop="norm" label="点检标准"></el-table-column>
+      <el-table-column prop="method" label="点检方法"></el-table-column>
+      <el-table-column prop="tool" label="点检工具"></el-table-column>
+      <el-table-column prop="cycle" label="点检周期"></el-table-column>        
+      <el-table-column prop="checker" label="点检人员"></el-table-column>
     </el-table>
   </view-content>
 </template>
@@ -24,45 +25,29 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      checkListData: [
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          cycle: '一周'
-        },
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          cycle: '一周'
-        },        
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          cycle: '一周'
-        }
-      ]
+      checkListData:[]
     }
   },
+  computed: {
+    ...mapState('device-data', [
+      'deviceData'
+    ])
+  },
   methods: {
-    
+    fetchCheckList () {
+      this.$http({
+        method: 'get',
+        url: '/api/check',
+        params: {
+          deviceId: this.deviceData.id
+        }
+      }).then((result) => {
+        this.checkListData = result.value
+      })
+    }
+  },
+  created () {
+    this.fetchCheckList()
   }
 }
 </script>

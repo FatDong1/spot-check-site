@@ -5,6 +5,7 @@
 export default {
   loading: false,
   isAdmin: false,
+  companyData: {},
   departmentOptions: [{
     value: '第一工厂',
     label: '第一工厂',

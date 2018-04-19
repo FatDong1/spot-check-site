@@ -19,6 +19,7 @@
     <view-content>
       <el-table
         stripe
+        v-loading="loading"
         :data="deviceListData">
         <el-table-column type="index">
         </el-table-column>
@@ -60,6 +61,7 @@ import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      loading: false,
       showFooter: true,
       pageTotal: null,
       currentPage: 1,
@@ -102,34 +104,6 @@ export default {
     ...mapMutations('device-data', [
       'updateDeviceData'
     ]),
-    // 改变工单阶段
-    changeStage (state) {
-      console.log(state)
-      let query = Object.assign({}, this.$route.query, {
-        state
-      })
-      this.$router.push({
-        query
-      })
-    },
-    // 改变时间
-    changeWorkUpdateTime (updateAt) {
-      let beginDate, endDate
-      if (!updateAt) {
-        delete this.$route.query.beginDate
-        delete this.$route.query.endDate
-      } else {
-        beginDate = convertTimestamp(updateAt[0], 'yyyy-MM-dd')
-        endDate = convertTimestamp(updateAt[1], 'yyyy-MM-dd')
-      }
-      let query = Object.assign({}, this.$route.query, {
-        beginDate,
-        endDate
-      })
-      this.$router.push({
-        query
-      })
-    },
     // 当页数改变执行的函数
     changePageIndex (pageIndex) {
       this.fetchDevicePage(pageIndex)
@@ -175,6 +149,7 @@ export default {
       })
     },
     fetchDevicePage (page) {
+      this.loading = true
       this.$http({
         method: 'get',
         url: '/api/devices',
@@ -182,6 +157,7 @@ export default {
           page: page
         }
       }).then((result) => {
+        this.loading = false
         this.deviceListData = result.value
       })
     }
