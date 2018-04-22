@@ -2,7 +2,7 @@
   <div class="home-container">
     <el-row :gutter="5">
       <el-col :span="6">
-        <all-work></all-work>
+        <all-work :percent="percent"></all-work>
       </el-col>
       <el-col :span="14">
         <work-question></work-question>
@@ -33,6 +33,40 @@ export default {
     AllWork,
     WorkQuestion,
     AllFactory
+  },
+  data () {
+    return {
+      percent: 0
+    }
+  },
+  methods: {
+    fetchPercent () {
+      let user = JSON.parse(sessionStorage.getItem('user'))
+      this.$http({
+        method: 'get',
+        url: '/api/work/today',
+        params: {
+          checkerId: user.id
+        }
+      }).then((result) => {
+        let total = result.value.length
+        let finish = 0
+        result.value.forEach((element) => {
+          if (element.state === 1) {
+            finish = finish + 1
+          }
+        })
+        if (total) {
+          this.percent = (finish / total).toFixed(2) - 0
+        } else {
+          this.percent = 0
+        }
+      })
+    }
+  },
+  created () {
+    console.log(23333)
+    this.fetchPercent()
   }
 }
 </script>

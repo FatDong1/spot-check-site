@@ -9,6 +9,11 @@
 import echarts from 'echarts/lib/echarts'
 import chartOptions from 'shared@/echart/options/companyContractTotal'
 export default {
+  props: {
+    percent: {
+      type: Number
+    }
+  },
   data () {
     return {
       companyContractTotalChart: null,
@@ -18,6 +23,8 @@ export default {
   methods: {
     // 初始化图表
     initChart () {
+      this.companyContractTotalOptions.series[0].data[0].value = this.percent
+      this.companyContractTotalOptions.series[0].data[1].value = this.percent - 0.05
       this.companyContractTotalChart = echarts.init(this.$refs.companyContractTotal)
       this.$nextTick(() => {
         this.companyContractTotalChart.setOption(this.companyContractTotalOptions)
