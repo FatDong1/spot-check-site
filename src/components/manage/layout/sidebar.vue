@@ -11,19 +11,19 @@
       <i class="el-icon-menu"></i>
       <span>首页</span>
     </el-menu-item>
-    <el-menu-item index="/work">
+    <el-menu-item index="/work?pageIndex=1">
       <i class="el-icon-tickets"></i>
-      <span>工单</span>
+      <span>工单录入</span>
     </el-menu-item>
-    <el-menu-item index="/device">
+    <el-menu-item index="/device"  v-if="isAdmin">
       <i class="el-icon-printer"></i>
-      <span>设备</span>
+      <span>设备管理</span>
     </el-menu-item>
-    <el-menu-item index="/score">
+    <el-menu-item index="/score" v-if="isAdmin">
       <i class="el-icon-news"></i>
       <span>绩效评分</span>
     </el-menu-item>
-    <el-menu-item index="/company">
+    <el-menu-item index="/company" v-if="isAdmin">
       <i class="el-icon-setting"></i>
       <span>组织架构</span>
     </el-menu-item>
@@ -31,24 +31,35 @@
       <i class="el-icon-location-outline"></i>
       <span>账户管理</span>
     </el-menu-item>
+    <el-menu-item index="/about">
+      <i class="el-icon-news"></i>
+      <span>关于我们</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        router: true,
-        sidebarSelectItem: '/home'
-      }
-    },
-    methods: {
-
-    },
-    created () {
-      this.sidebarSelectItem = '/' + this.$route.name
+import { mapState } from 'vuex'
+export default {
+  data () {
+    return {
+      router: true,
+      sidebarSelectItem: '/home'
     }
+  },
+  computed: {
+    isAdmin () {
+      let obj = JSON.parse(sessionStorage.getItem('user'))
+      return obj.isAdmin
+    }
+  },
+  methods: {
+
+  },
+  created () {
+    this.sidebarSelectItem = '/' + this.$route.name
   }
+}
 </script>
 
 <style lang="less">

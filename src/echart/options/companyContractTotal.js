@@ -18,7 +18,7 @@ const companyContractTotal = {
         }
       }
     }, {
-      value: 0.65,
+      value: 0.70,
       direction: 'right',
       itemStyle: {
         normal: {

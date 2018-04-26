@@ -1,6 +1,15 @@
 <template>
   <view-container>
-    <view-header>{{ title }}</view-header>
+    <view-header-flex>
+      <span>{{ title }}</span>
+      <el-date-picker
+        slot="right"
+        v-model="assessDate"
+        type="date"
+        style="width: auto"
+        placeholder="选择日期">
+      </el-date-picker>
+    </view-header-flex>
     <info-detail>
       <row-layout :column="2">
         <info-detail-item
@@ -85,9 +94,7 @@ export default {
       column: 2,
       labelWidth: '120px',
       loading: false,
-      businessDialogLoading: false,
-      businessDialogVisible: false,
-      uploadActionURL: '',
+      assessDate: '',
       ifShowEdit: false,
       radio: '1',
       textarea: '',

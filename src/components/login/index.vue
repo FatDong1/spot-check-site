@@ -56,7 +56,15 @@ export default {
         url: '/api/login'
       }).then((result) => {
         let flag = result.value[0].isAdmin === 0 ? false : true
-        sessionStorage.setItem('user', JSON.stringify(result.value[0]))
+        let obj = {
+          id: result.value[0].id,
+          name: result.value[0].name,
+          isAdmin: result.value[0].isAdmin,
+          account: result.value[0].account,
+          factory: result.value[0].factory,
+          plant: result.value[0].plant
+        }
+        sessionStorage.setItem('user', JSON.stringify(obj))
         this.updateFlag(flag)
         this.buttonText = '登录成功'
         this.$router.push({name: 'home'})

@@ -60,9 +60,89 @@ export default {
     ])
   },
   methods: {
-    ...mapMutations('company-data', [
+    ...mapMutations([
       'updateCompanyData'
     ]),
+    ...mapMutations('company-data', [
+      'updateUserInfo'
+    ]),
+    fetchCompany () {
+      this.$http({
+        method: 'get',
+        url: '/api/users' 
+      }).then((result) => {
+        let temp = [{
+          id: 1,
+          label: '第一工厂',
+          children: [{
+            id: 11,
+            label: '第一车间',
+            canAdd: true,
+            children: []
+          },{
+            id: 12,
+            label: '第二车间',
+            canAdd: true,
+            children: []
+          }]
+        }, {
+          id: 2,
+          label: '第二工厂',
+          children: [{
+            id: 21,
+            label: '第一车间',
+            canAdd: true,
+            children: []
+          }, {
+            id: 22,
+            label: '第二车间',
+            canAdd: true,
+            children: []
+          }]
+        }, {
+          id: 3,
+          label: '第三工厂',
+          children: [{
+            id: 7,
+            label: '第一车间',
+            canAdd: true,
+            children: []
+          }, {
+            id: 8,
+            label: '第二车间',
+            canAdd: true,
+            children: []
+          }]
+        }]
+        result.value.forEach((element) => {
+          let tempObj = {
+            id: element.id,
+            label: element.name,
+            canDel: true
+          }
+          if (element.factory === '第一工厂') {
+            if (element.plant === '第一车间') {
+              temp[0].children[0].children.push(tempObj)
+            } else if (element.plant === '第二车间') {
+              temp[0].children[1].children.push(tempObj)
+            }
+          } else if (element.factory === '第二工厂') {
+            if (element.plant === '第一车间') {
+              temp[1].children[0].children.push(tempObj)
+            } else if (element.plant === '第二车间') {
+              temp[1].children[1].children.push(tempObj)
+            }
+          } else if (element.factory === '第三工厂') {
+            if (element.plant === '第一车间') {
+              temp[2].children[0].children.push(tempObj)
+            } else if (element.plant === '第二车间') {
+              temp[2].children[1].children.push(tempObj)
+            }
+          }
+        })
+        this.updateCompanyData(temp)
+      })
+    },
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
@@ -78,12 +158,11 @@ export default {
         factory: node.parent.data.label,
         plant: data.label
       }
-      this.updateCompanyData(obj)
+      this.updateUserInfo(obj)
       this.currentData = data
       this.dialogVisible = true
       
     },
-
     remove(node, data) {
       this.$confirm('此操作将从组织架构永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',

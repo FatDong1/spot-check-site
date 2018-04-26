@@ -12,7 +12,7 @@ const newBusinessThisWeek = {
     itemWidth: 12,
     itemHeight: 12,
     x: 'center',
-    data: ['车床', '机床', '铣床', '其他']
+    data: ['车床', '数控机床', '铣床', '其他']
   },
   grid: {
     top: '15%',
@@ -24,7 +24,7 @@ const newBusinessThisWeek = {
   xAxis: [
     {
       type: 'category',
-      data: ['第一车间', '第二车间', '第三车间', '第四车间', '第五车间'],
+      data: ['第一工厂第一车间', '第一工厂第二车间', '第二工厂第一车间', '第二工厂第二车间','第三工厂第一车间', '第三工厂第二车间',],
       axisTick: {
         show: false
       },
@@ -72,25 +72,25 @@ const newBusinessThisWeek = {
       name: '车床',
       type: 'bar',
       barWidth: '15%',
-      data: [40, 52, 120, 74, 90]
+      data: [40, 52, 120, 74, 90, 50]
     },
     {
-      name: '机床',
+      name: '数控机床',
       type: 'bar',
       barWidth: '15%',
-      data: [80, 72, 70, 114, 80]
+      data: [80, 72, 70, 114, 80, 60]
     },
     {
       name: '铣床',
       type: 'bar',
       barWidth: '15%',
-      data: [90, 92, 70, 94, 100]
+      data: [90, 92, 70, 94, 100, 30]
     },
     {
       name: '其他',
       type: 'bar',
       barWidth: '15%',
-      data: [100, 112, 90, 74, 60]
+      data: [100, 112, 90, 74, 60, 40]
     }
   ]
 }

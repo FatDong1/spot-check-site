@@ -29,6 +29,14 @@ Vue.component('info-detail', InfoDetail)
 Vue.component('info-detail-item', InfoDetailItem)
 Vue.component('check-header', CheckHeader)
 
+Vue.filter('formateDate', function (time) {
+  let date = new Date(time)
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  return year + '年' + month +'月' + day + '日'
+})
+
 Vue.prototype.$http = httpRequest
 
 new Vue({

@@ -23,7 +23,7 @@
         :data="deviceListData">
         <el-table-column type="index">
         </el-table-column>
-        <el-table-column prop="name" label="设备名称"></el-table-column>
+        <el-table-column prop="deviceName" label="设备名称"></el-table-column>
         <el-table-column prop="department" label="设备归属"></el-table-column>
         <el-table-column prop="category" label="设备归类"></el-table-column>
         <el-table-column prop="serialNumber" label="出厂编号"></el-table-column>

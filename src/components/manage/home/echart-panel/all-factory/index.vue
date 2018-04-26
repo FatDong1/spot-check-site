@@ -33,7 +33,7 @@ export default {
 .echart-factory {
   display: inline-block;
   background: #fff;
-  width: 480px;
+  width: 100%;
   height: 250px;
   padding: 20px;
   border-radius: 10px;

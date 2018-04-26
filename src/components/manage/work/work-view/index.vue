@@ -1,6 +1,6 @@
 <template>
   <view-container>
-    <view-header>工单录入</view-header>
+    <view-header>工单查看</view-header>
     <info-detail>
       <row-layout :column="2">
         <info-detail-item
@@ -107,39 +107,6 @@
           {{ workData.method }}
         </info-detail-item>
       </row-layout>
-      <row-layout :column="2">
-        <info-detail-item
-          slot="left"
-          :label-width="labelWidth"
-          label="点检结果">
-          <span v-if="workData.result">{{ workData.result }}</span>
-          <el-input v-else v-model="result" placeholder="请输入点检的结果" style="width: 50%"></el-input>
-          <span>{{ workData.unit }}</span>
-        </info-detail-item>
-        <info-detail-item
-          slot="right"
-          :label-width="labelWidth"
-          label="是否正常">
-          <span v-if="workData.isProblem !== null">{{ workData.isProblem == 1 ? '正常' : '异常' }}</span>
-          <div v-else>
-            <el-radio v-model="isProblem" label="1">正常</el-radio>
-            <el-radio v-model="isProblem" label="0">异常</el-radio>
-          </div>
-        </info-detail-item>
-      </row-layout>
-      <row-layout :column="1">
-        <info-detail-item
-          :label-width="labelWidth"
-          label="点检发现的问题">
-          <span v-if="workData.problem !== null">{{ workData.problem }}</span>
-          <el-input 
-            v-else
-            v-model="problem"
-            type="textarea"
-            :rows="2"
-            placeholder="请输入点检过程中发现的问题"></el-input>
-        </info-detail-item>
-      </row-layout>
       <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
@@ -148,12 +115,12 @@
         </info-detail-item>
       </row-layout>
     </info-detail>
-    <tool-bar v-if="!workData.result">
+    <tool-bar v-if="!workData.state">
       <div slot="right">
         <el-button
         slot="right"
         type="primary"
-        @click="saveWork">提交</el-button>
+        @click="saveWork">录入</el-button>
       </div>
     </tool-bar>
   </view-container>
@@ -173,9 +140,6 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      problem: '',
-      isProblem: '',
-      result: '',
       column: 2,
       labelWidth: '120px',
       loading: false,
@@ -184,9 +148,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('work-data', [
-      'updatePartData'
-    ]),
     // 初始化图表
     initChart () {
       this.echartsDom = echarts.init(this.$refs.deviceFuture)
@@ -195,28 +156,8 @@ export default {
       })
     },
     saveWork () {
-      let obj = {
-        id: this.workData.workId,
-        result: this.result,
-        problem: this.problem,
-        isProblem: this.isProblem
-      }
-      this.$http({
-        method: 'post',
-        url: '/api/work',
-        data: obj
-      }).then((result) => {
-        this.updatePartData(obj)
-        console.log(this.workData)
-        this.$message({
-          type: 'success',
-          message: result.msg
-        })
-      }).catch((err) => {
-        this.$message({
-          type: 'error',
-          message: result.msg
-        })
+      this.$router.push({
+        name: 'work-edit'
       })
     }
   },

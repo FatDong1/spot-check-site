@@ -1,12 +1,9 @@
 
 export default {
-  updateCompanyData (state, payload) {
-    state.companyData = {
+  updateUserInfo (state, payload) {
+    state.infoData = {
       plant: payload.plant,
       factory: payload.factory
     }
-  },
-  updateCompanyPerson (state, payload) {
-    state.companyPerson = payload
   }
 }

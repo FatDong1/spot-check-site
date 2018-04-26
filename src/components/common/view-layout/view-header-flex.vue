@@ -13,8 +13,7 @@
 export default {
   props: {
     width: {
-      type: String,
-      default: '50%'
+      type: String
     }
   }
 }
@@ -34,7 +33,7 @@ export default {
   }
   
   .view-header-right {
-    min-width: 350px;
+    // min-width: 350px;
     margin-left: auto;
     order: 2;
   }

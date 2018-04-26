@@ -9,6 +9,7 @@ import account from '../components/manage/account/index.vue'
 import workIndex from '../components/manage/work/work-index/index.vue'
 import workList from '../components/manage/work/work-list/index.vue'
 import workEdit from '../components/manage/work/work-edit/index.vue'
+import workView from '../components/manage/work/work-view/index.vue'
 
 import deviceIndex from '../components/manage/device/device-index/index.vue'
 import deviceList from '../components/manage/device/device-list/index.vue'
@@ -21,6 +22,7 @@ import scoreList from '../components/manage/score/score-list/index.vue'
 import scoreDetail from '../components/manage/score/score-detail/index.vue'
 
 import companyIndex from '../components/manage/company/company-index/index.vue'
+import aboutIndex from '../components/manage/about/index.vue'
 
 Vue.use(Router)
 
@@ -49,9 +51,13 @@ const router = new Router({
             name: 'work-list',
             component: workList
           }, {
-            path: '/work/detail/:state/:id',
-            name: 'work-detail',
+            path: '/work/edit',
+            name: 'work-edit',
             component: workEdit
+          }, {
+            path: '/work/view',
+            name: 'work-view',
+            component: workView
           }]
         },
         // 设备管理
@@ -108,6 +114,11 @@ const router = new Router({
           path: '/account',
           name: 'account',
           component: account
+        },
+        {
+          path: '/about',
+          name: 'about',
+          component: aboutIndex
         }
       ]
     },

@@ -13,10 +13,10 @@
         <el-radio v-model="form.sex" :label="2">女</el-radio>
       </el-form-item>
       <el-form-item label="工厂">
-        <span>{{ companyData.factory }}</span>
+        <span>{{ infoData.factory }}</span>
       </el-form-item>
       <el-form-item label="车间">
-        <span>{{ companyData.plant }}</span>
+        <span>{{ infoData.plant }}</span>
       </el-form-item>
       <el-form-item label="登录账号" >
         <el-input v-model="form.account" auto-complete="off"></el-input>
@@ -85,15 +85,15 @@ export default {
   },
   computed: {
     ...mapState('company-data', [
-      'companyData'
+      'infoData'
     ])
   },
   methods: {
     ...mapMutations(['updateLoading']),
     fetchAddPerson () {
       let result = {
-        factory: this.companyData.factory,
-        plant: this.companyData.plant,
+        factory: this.infoData.factory,
+        plant: this.infoData.plant,
         sex: this.form.sex,
         name: this.form.name,
         password: this.form.pass,

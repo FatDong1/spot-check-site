@@ -5,7 +5,7 @@
         slot="left"
         :label-width="labelWidth"
         label="设备名称">
-        {{ deviceData.name }}
+        {{ deviceData.deviceName }}
       </info-detail-item>
       <info-detail-item
         slot="right"

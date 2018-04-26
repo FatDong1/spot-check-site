@@ -1,15 +1,15 @@
 <template>
   <div class="home-container">
-    <el-row :gutter="20">
-      <el-col :span="8">
+    <el-row :gutter="5">
+      <el-col :span="6">
         <all-work></all-work>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="14">
         <work-question></work-question>
       </el-col>
     </el-row>
     <el-row :gutter="20" class="second-row">
-      <el-col :span="8">
+      <el-col :span="20">
         <all-factory></all-factory>
       </el-col>
     </el-row>
@@ -41,6 +41,7 @@ export default {
 <style>
 .home-container {
   vertical-align: middle;
+  padding: 0 20px;
 }
 .second-row {
   margin-top: 20px;

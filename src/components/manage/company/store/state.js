@@ -1,7 +1,6 @@
 export default {
-  companyData: {
+  infoData: {
     factory: null,  
     plant: null
-  },
-  compandyPerson: []
+  }
 }

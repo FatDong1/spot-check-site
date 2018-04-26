@@ -8,7 +8,7 @@ export default {
     state.loading = loading
   },
   updateFlag (state, flag) {
-    state.flag = flag
+    state.isAdmin = flag
   },
   updateCompanyData (state, payload) {
     state.companyData = payload

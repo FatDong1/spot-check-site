@@ -39,6 +39,7 @@ breadcrumbConfig['score-list'] = { to: '/score', title: '绩效列表' }
 breadcrumbConfig['score-detail'] = { to: '/score/detail', title: '绩效详情' }
 
 breadcrumbConfig['account'] = { to: '/account', title: '账户管理' }
+breadcrumbConfig['about'] = { to: '/about', title: '关于我们' }
 
 export default {
   data () {
@@ -118,6 +119,10 @@ export default {
         case 'account':
           this.searchShow = false
           this.changeBreadcrumbOptions('home', 'account')
+          break
+        case 'about':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'about')
           break
         default:
           console.error('app-breadcrumb', 'route.name 不存在')
