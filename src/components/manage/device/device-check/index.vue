@@ -96,11 +96,14 @@ export default {
       },
       normData: {
         norm: '',
-        unit: ''
+        unit: '',
+        normType: '2',
+        normOptions: ''
       },
       methodData: {
         method: '',
-        tool: ''
+        tool: '',
+        deviceState: ''
       },
       cycleData: {
         cycle: '',
@@ -111,10 +114,33 @@ export default {
   },
   computed: {
     ...mapState('device-data', [
-      'deviceData'
+      'deviceData',
+      'checkData'
     ])
   },
   methods: {
+    ...mapMutations([
+      'updateLoading'
+    ]),
+    initData () {
+      this.pointData.name = this.checkData.name
+      this.pointData.number = this.checkData.number
+      this.pointData.element = this.checkData.element
+      this.pointData.special = this.checkData.special
+      
+      this.normData.norm = this.checkData.norm
+      this.normData.unit = this.checkData.unit
+      this.normData.normType = this.checkData.normType
+      this.normData.normOptions = this.checkData.normOptions
+
+      this.methodData.method = this.checkData.tool
+      this.methodData.deviceState = this.checkData.deviceState
+      
+      this.cycleData.cycle = this.checkData.cycle
+      this.cycleData.startDate = this.checkData.startDate
+
+      this.personData.push(this.checkData.checker)
+    },
     updatePointData (data) {
       this.pointData = data
     },
@@ -220,6 +246,7 @@ export default {
     handleSubmit () {
       this.send++
       this.$nextTick(() => {
+        this.updateLoading(true)
         let result = Object.assign({}, this.pointData, this.normData, this.methodData, this.cycleData)
         result['checkerId'] = this.personData
         result['deviceId'] = this.deviceData.id
@@ -231,6 +258,10 @@ export default {
           this.$message({
             type: 'success',
             message: result.msg
+          })
+          this.updateLoading(false)          
+          this.$router.push({
+            name: 'device-list'
           })
         }).catch(() => {
           this.$message({
@@ -246,7 +277,16 @@ export default {
       } else if (this.stepType === 'prev') {
         this.stepActive++
       }
-    },
+    }
+  },
+  created () {
+    // if (this.$route.query.state === 'edit') {
+    //   console.log('init................')
+    //   this.$nextTick(() => {
+    //     this.initData()
+    //   })
+    //   console.log(this.pointData, this.methodData, this.cycleData, this.normData)
+    // }
   }
 }
 </script>

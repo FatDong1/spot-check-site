@@ -8,6 +8,7 @@
       show-checkbox
       highlight-current
       default-expand-all
+      :default-checked-keys="checkerId"
       :filter-node-method="filterNode"
       ref="personDom">
     </el-tree> 
@@ -36,6 +37,9 @@ export default {
   computed: {
     ...mapState([
       'companyData'
+    ]),
+    ...mapState('device-data', [
+      'checkerId'
     ])
   },
   methods: {

@@ -34,6 +34,7 @@ breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
 breadcrumbConfig['device-add'] = { to: '/device/add', title: '新增设备' }
 breadcrumbConfig['device-detail'] = { to: '/device/detail', title: '设备详情' }
 breadcrumbConfig['device-check'] = { to: '/device/check', title: '新增点检' }
+breadcrumbConfig['device-detail-check'] = { to: '/device/detail/check', title: '点检详情' }
 
 breadcrumbConfig['score-list'] = { to: '/score', title: '绩效列表' }
 breadcrumbConfig['score-detail'] = { to: '/score/detail', title: '绩效详情' }
@@ -97,6 +98,10 @@ export default {
         case 'device-detail':
           this.searchShow = false
           this.changeBreadcrumbOptions('home', 'device', 'device-detail')
+          break
+        case 'device-detail-check':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'device', 'device-detail', 'device-detail-check')
           break
         case 'device-check':
           this.searchShow = false

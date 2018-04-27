@@ -18,4 +18,10 @@ export default {
   updatePersonData (state, payload) {
     state.personData = payload
   },
+  updateCheckData (state, payload) {
+    state.checkData = payload
+  },
+  updateCheckerId (state, payload) {
+    state.checkerId.push(payload)
+  }
 }

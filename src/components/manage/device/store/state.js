@@ -2,6 +2,8 @@ export default {
   deviceData: {
 
   },
+  checkerId: [],
+  checkData: {},
   pointData: {
     name: '',
     number: '',

@@ -16,6 +16,7 @@ import deviceList from '../components/manage/device/device-list/index.vue'
 import deviceCheck from '../components/manage/device/device-check/index.vue'
 import deviceAdd from '../components/manage/device/device-add/index.vue'
 import deviceDetail from '../components/manage/device/device-detail/index.vue'
+import deviceCheckDetail from '../components/manage/device/device-detail/device-detail-check/check-detail.vue'
 
 import scoreIndex from '../components/manage/score/index.vue'
 import scoreList from '../components/manage/score/score-list/index.vue'
@@ -82,6 +83,10 @@ const router = new Router({
             path: '/device/detail',
             name: 'device-detail',
             component: deviceDetail
+          }, {
+            path: '/device/detail/check',
+            name: 'device-detail-check',
+            component: deviceCheckDetail
           }]
         },
         // 人员绩效

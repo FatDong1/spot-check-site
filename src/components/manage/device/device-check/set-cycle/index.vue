@@ -16,7 +16,7 @@
     </row-layout>
     <row-layout :span="16">
       <el-form-item prop="cycle" label="点检周期">
-        <el-select v-model="data.cycle" placeholder="请选择" @change="handleChange">
+        <el-select v-model="data.cycle" placeholder="请选择" @change="handleChange" style="width: 50%">
           <el-option
             v-for="item in options"
             :key="item.label"
