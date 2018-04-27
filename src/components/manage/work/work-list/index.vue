@@ -33,7 +33,7 @@
         <el-table-column type="index">
         </el-table-column>
         <el-table-column prop="deviceName" label="设备名称"></el-table-column>
-        <el-table-column prop="usePlace" label="设备位置"></el-table-column>
+        <el-table-column prop="department" label="设备位置"></el-table-column>
         <el-table-column prop="name" label="点检部件"></el-table-column>
         <el-table-column prop="element" label="点检要素"></el-table-column>
         <el-table-column label="点检标准">
@@ -132,7 +132,6 @@ export default {
     fetchPageWork (obj) {
       let user = JSON.parse(sessionStorage.getItem('user'))
       this.loading = true
-      console.log(this)
       this.$http({
         method: 'get',
         url: '/api/work',
@@ -141,7 +140,7 @@ export default {
           name: obj.name,
           checkerId: user.id,
           page: obj.page,
-          department: obj.department ? obj.department : []
+          department: obj.department ? obj.department : ''
         }
       }).then((result) => {
         this.workListData = result.value      
@@ -150,6 +149,7 @@ export default {
     },
     handleView (row) {
       this.updateWorkData(row)
+      console.log(row)
       this.$router.push({
         name: 'work-view'
       })

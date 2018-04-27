@@ -2,10 +2,12 @@
   <view-content>
     <el-table
       stripe
+      v-loading="isLoading"
       :data="checkListData">
       <el-table-column type="index">
       </el-table-column>
       <el-table-column prop="name" label="点检部件"></el-table-column>
+      <el-table-column prop="number" label="部件编号"></el-table-column>
       <el-table-column prop="element" label="点检要素"></el-table-column>
       <el-table-column label="点检标准">
         <template slot-scope="scope">
@@ -14,6 +16,7 @@
       </el-table-column>
       <el-table-column prop="tool" label="点检工具"></el-table-column>
       <el-table-column prop="method" label="点检方法"></el-table-column>  
+      <el-table-column prop="deviceState" label="点检时设备状态"></el-table-column>
       <el-table-column prop="checkDate" label="点检日期">
         <template slot-scope="scope">
           <span>{{ scope.row.checkDate | formateDate }}</span>
@@ -25,11 +28,6 @@
           <span>{{ scope.row.state ? '完成' : '未完成' }}</span>
         </template>
       </el-table-column>         
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
-        </template>
-      </el-table-column>
     </el-table>
   </view-content>
 </template>
@@ -39,6 +37,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      isLoading: false,
       checkListData: []
     }
   },
@@ -52,6 +51,7 @@ export default {
 
     },
     fetchWorkExpired () {
+      this.isLoading = true
       this.$http({
         method: 'get',
         url: '/api/work/expired',
@@ -59,6 +59,7 @@ export default {
           deviceId: this.deviceData.id
         }
       }).then((result) => {
+        this.isLoading = false
         this.checkListData = result.value
       }) 
     }

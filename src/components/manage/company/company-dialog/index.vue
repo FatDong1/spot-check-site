@@ -8,6 +8,19 @@
       <el-form-item label="姓名" >
         <el-input v-model="form.name" auto-complete="off"></el-input>
       </el-form-item>
+      <el-form-item label="工号" >
+        <el-input v-model="form.userNumber" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="职位" >
+        <el-select v-model="form.job" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="性别">
         <el-radio v-model="form.sex" :label="1">男</el-radio>
         <el-radio v-model="form.sex" :label="2">女</el-radio>
@@ -65,8 +78,11 @@ export default {
         pass: '',
         account: '',
         checkPass: '',
-        sex: ''
+        sex: '',
+        job: '',
+        userNumber: ''
       },
+      options: ['日常点检员', '专职点检员', '精密点检员'],
       rule: {
         pass: [
           { validator: validatePass, trigger: 'blur' }
@@ -97,7 +113,9 @@ export default {
         sex: this.form.sex,
         name: this.form.name,
         password: this.form.pass,
-        account: this.form.account
+        account: this.form.account,
+        job: this.form.job,
+        userNumber: this.form.userNumber
       }
       this.loading = true
       this.$http({

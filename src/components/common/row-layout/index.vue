@@ -15,7 +15,7 @@
     <el-col :span="spanNum" v-if="$slots.left && column === 2">
       <slot name="left"></slot>
     </el-col>
-    <el-col :span="spanNum" v-if="$slots.left && column === 2">
+    <el-col :span="spanNum" v-if="$slots.left && column === 2" :style="isInput ? 'height: 60px' : ''">
       <slot name="right"></slot>
     </el-col>
   </el-row>
@@ -35,6 +35,10 @@ export default {
     span: {
       type: Number,
       default: 24
+    },
+    isInput: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

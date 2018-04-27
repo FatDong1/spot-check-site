@@ -95,7 +95,7 @@ export default {
           norm: this.data.norm,
           unit: this.data.unit,
           normType: this.data.normType,
-          normOptions: this.result.join(',')
+          normOptions: this.result.join('，')
         }
         this.$emit('dispatch', obj, this.$refs.normDom)
       }
@@ -103,7 +103,7 @@ export default {
   },
   created () {
     if (this.checkData.normType === '1' && this.$route.query.state === 'edit') {
-      let arr = this.checkData.normOptions.split(',')
+      let arr = this.checkData.normOptions.split('，')
       this.options = arr
     }
   }

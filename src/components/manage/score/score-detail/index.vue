@@ -22,7 +22,7 @@
           slot="right"
           :label-width="labelWidth"
           label="性别">
-          {{ scoreData.sex }}
+          {{ scoreData.sex === 1 ? '男' : '女'}}
         </info-detail-item>
       </row-layout>
       <row-layout :column="column">
@@ -36,7 +36,7 @@
           slot="right"
           :label-width="labelWidth"
           label="部门">
-          {{ scoreData.department }}
+          {{ scoreData.factory + scoreData.plant }}
         </info-detail-item>
       </row-layout>
       <row-layout :column="1">
@@ -57,15 +57,9 @@
     <tool-bar>
       <div slot="right">
         <el-button
-          v-if="$route.query.state === 'view'"
           slot="right"
           type="primary"
           @click="decideScore">评分</el-button>
-        <el-button
-          v-else
-          slot="right"
-          type="primary"
-          @click="modifyScore">修改评分</el-button>
       </div>
     </tool-bar>
     <score-dialog :visible="showDialog" @closeScoreDialog="closeDialog"></score-dialog>
@@ -125,7 +119,7 @@ export default {
       'scoreData'
     ]),
     title () {
-      return this.scoreData.name + this.scoreData.decideDate + '点检绩效表'
+      return this.scoreData.name  + '点检绩效表'
     }
   },
   mounted () {

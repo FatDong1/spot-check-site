@@ -107,14 +107,30 @@
           {{ workData.method }}
         </info-detail-item>
       </row-layout>
-      <row-layout :column="2">
+      <row-layout :column="2" :isInput="workData.result ? false : true">
         <info-detail-item
+          v-if="workData.normType === '2'"
           slot="left"
           :label-width="labelWidth"
           label="点检结果">
           <span v-if="workData.result">{{ workData.result }}</span>
-          <el-input v-else v-model="result" placeholder="请输入点检的结果" style="width: 50%"></el-input>
+          <el-input size="mini" v-else v-model="result" placeholder="请输入点检的结果" style="width: 50%"></el-input>
           <span>{{ workData.unit }}</span>
+        </info-detail-item>
+        <info-detail-item
+          v-if="workData.normType === '1'"
+          slot="left"
+          :label-width="labelWidth"
+          label="点检结果">
+          <span v-if="workData.result">{{ workData.result }}</span>
+          <el-select v-else v-model="result" placeholder="请选择部件的状态" style="width: 50%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
         </info-detail-item>
         <info-detail-item
           slot="right"
@@ -176,6 +192,7 @@ export default {
       problem: '',
       isProblem: '',
       result: '',
+      options: [],
       column: 2,
       labelWidth: '120px',
       loading: false,
@@ -207,7 +224,6 @@ export default {
         data: obj
       }).then((result) => {
         this.updatePartData(obj)
-        console.log(this.workData)
         this.$message({
           type: 'success',
           message: result.msg
@@ -224,6 +240,11 @@ export default {
     ...mapState('work-data', [
       'workData'
     ])
+  },
+  created () {
+    if (this.workData.normType === '1') {
+      this.options = this.workData.normOptions.split('，')
+    }
   },
   mounted () {
     this.initChart()

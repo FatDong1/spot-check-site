@@ -19,7 +19,7 @@
       <i class="el-icon-printer"></i>
       <span>设备管理</span>
     </el-menu-item>
-    <el-menu-item index="/score" v-if="isAdmin">
+    <el-menu-item index="/score?pageIndex=1" v-if="isAdmin">
       <i class="el-icon-news"></i>
       <span>绩效评分</span>
     </el-menu-item>

@@ -5,9 +5,12 @@
       <!--设备过滤-->
       <span class="filter-label">筛选:</span> 
       <el-cascader
-        placeholder="试试搜索"
+        placeholder="用户所在部门"
         size="small"
-        :options="deviceDepartmentData"
+        v-model="department" 
+        clearable
+        @change="handleDepartment"
+        :options="departmentOptions"
         filterable
       ></el-cascader>
     </view-content-float>
@@ -15,21 +18,24 @@
     <view-content>
       <el-table
         stripe
-        :data="workListData">
+        :data="listData">
         <el-table-column type="index">
         </el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="department" label="部门"></el-table-column>
-        <el-table-column prop="number" label="工号"></el-table-column>
+        <el-table-column prop="userNumber" label="工号"></el-table-column>
+        <el-table-column prop="sex" label="性别">
+          <template slot-scope="scope">
+            <span>{{ scope.sex === 1 ? '男' : '女'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="factory" label="所属工厂"></el-table-column>
+        <el-table-column prop="plant" label="所属车间"></el-table-column>
         <el-table-column prop="job" label="职位"></el-table-column>
-        <el-table-column prop="score" label="绩效评分"></el-table-column>
-        <el-table-column prop="decideDate" label="评分日期"></el-table-column>
         <el-table-column
           label="操作"
           width="150">
           <template slot-scope="scope">
             <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="handleModify(scope.row)" type="text" size="small">修改评分</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,14 +56,15 @@
 
 <script>
 import { convertTimestamp } from 'shared@/utils/common.js'
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
       pageTotal: null,
       currentPage: 1,
-      workListData: [
+      department: [],
+      listData: [
         {
           name: '小明',
           department: '第一工厂第一车间',
@@ -82,69 +89,22 @@ export default {
           score: '98',
           decideDate: '2018年3月'          
         }
-      ],
-      deviceDepartmentData: [{
-        value: 'shejiyuanze',
-        label: '第一工厂',
-        children: [{
-          value: 'yizhi',
-          label: '第一车间'
-        }, {
-          value: 'fankui',
-          label: '第二车间'
-        }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
-        }]
-      }, {
-        value: 'shejiyuanze',
-        label: '第二工厂',
-        children: [{
-          value: 'yizhi',
-          label: '第一车间'
-        }, {
-          value: 'fankui',
-          label: '第二车间'
-        }, {
-          value: 'xiaolv',
-          label: '第三车间'
-        }, {
-          value: 'kekong',
-          label: '第四车间'
-        }]
-      }]
+      ]
     }
+  },
+  computed: {
+    ...mapState([
+      'departmentOptions'
+    ])
   },
   methods: {
     ...mapMutations('score-data', [
       'updateScoreData'
     ]),
-    // 改变工单阶段
-    changeStage (state) {
-      console.log(state)
+    handleDepartment (value) {
       let query = Object.assign({}, this.$route.query, {
-        state
-      })
-      this.$router.push({
-        query
-      })
-    },
-    // 改变时间
-    changeWorkUpdateTime (updateAt) {
-      let beginDate, endDate
-      if (!updateAt) {
-        delete this.$route.query.beginDate
-        delete this.$route.query.endDate
-      } else {
-        beginDate = convertTimestamp(updateAt[0], 'yyyy-MM-dd')
-        endDate = convertTimestamp(updateAt[1], 'yyyy-MM-dd')
-      }
-      let query = Object.assign({}, this.$route.query, {
-        beginDate,
-        endDate
+        factory: value[0],
+        plant: value[1]
       })
       this.$router.push({
         query
@@ -159,24 +119,47 @@ export default {
         query
       })
     },
-    handleModify (row) {
-      this.updateScoreData(row)
-      this.$router.push({
-        name: 'score-detail',
-        query: {
-          state: 'modify'
+    fetchPageUser (obj) {
+      this.loading = true
+      this.$http({
+        method: 'get',
+        url: '/api/users/page',
+        params: {
+          name: obj.name,
+          page: obj.page,
+          factory: obj.factory,
+          plant: obj.plant
         }
+      }).then((result) => {
+        this.listData = result.value      
+        this.loading = false
       })
     },
     handleView (row) {
       this.updateScoreData(row)
       this.$router.push({
-        name: 'score-detail',
-        query: {
-          state: 'view'
-        }
+        name: 'score-detail'
       })
     }
+  },
+  watch: {
+    $route (current, old) {
+      let obj = {
+        page: current.query.pageIndex,
+        name: current.query.searchFilter ? current.query.searchFilter : '',
+        factory: current.query.factory ? current.query.factory : '',
+        plant: current.query.plant ? current.query.plant : '',        
+      }
+      this.fetchPageUser(obj)
+    }
+  },
+  created () {
+    this.fetchPageUser({
+      page: 1,
+      name: '',
+      factory: '',
+      plant: ''
+    })
   }
 }
 </script>
