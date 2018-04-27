@@ -36,9 +36,9 @@
         <el-table-column prop="usePlace" label="设备位置"></el-table-column>
         <el-table-column prop="name" label="点检部件"></el-table-column>
         <el-table-column prop="element" label="点检要素"></el-table-column>
-        <el-table-column prop="norm" label="点检标准">
+        <el-table-column label="点检标准">
           <template slot-scope="scope">
-            <span>{{ scope.row.norm + scope.row.unit }}</span>
+            <span>{{ scope.row.normType === '2' ? (scope.row.norm + scope.row.unit) : scope.row.normOptions }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="tool" label="点检工具"></el-table-column>

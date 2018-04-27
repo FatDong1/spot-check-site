@@ -33,13 +33,14 @@
     </row-layout>
     <row-layout :span="16" v-if="data.normType === '1'" v-for="(item ,index) in options" :key="index">
       <el-form-item prop="normOptions" :label="'可选项' + (index + 1)">
-         <el-input style="width: 50%" @change="changeOption" @focus="focusInput(index)"></el-input> 
+         <el-input :value="item" style="width: 50%" @change="changeOption" @focus="focusInput(index)"></el-input> 
       </el-form-item>
     </row-layout>
   </el-form>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     step: {
@@ -60,7 +61,9 @@ export default {
     }
   },
   computed: {
-
+    ...mapState('device-data', [
+      'checkData'
+    ])
   },
   methods: {
     changeType (value) {
@@ -96,6 +99,12 @@ export default {
         }
         this.$emit('dispatch', obj, this.$refs.normDom)
       }
+    }
+  },
+  created () {
+    if (this.checkData.normType === '1' && this.$route.query.state === 'edit') {
+      let arr = this.checkData.normOptions.split(',')
+      this.options = arr
     }
   }
 }

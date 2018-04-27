@@ -18,7 +18,7 @@
       <el-table-column prop="method" label="点检方法"></el-table-column>
       <el-table-column prop="deviceState" label="设备点检状态"></el-table-column>
       <el-table-column prop="tool" label="点检工具"></el-table-column>
-      <el-table-column prop="cycle" label="点检周期"></el-table-column>        
+      <el-table-column prop="cycle" label="点检周期（天）"></el-table-column>        
       <el-table-column prop="checker" label="点检人员"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -62,7 +62,9 @@ export default {
         name: 'device-detail-check'
       })
     },
-    handleEdit () {
+    handleEdit (row) {
+      this.updateCheckerId(row.checkerId)
+      this.updateCheckData(row)
       this.$router.push({
         name: 'device-check',
         query: {

@@ -2,12 +2,12 @@
   <view-container>
     <view-header>
       设备详情
-      <el-date-picker
+      <!-- <el-date-picker
         slot="right"
         size="mini"
         v-if="activeMenu === 'miss-list'"
         clearable
-        v-model="workUpdateTime"
+        v-model="updateTime"
         type="daterange"
         align="center"
         unlink-panels
@@ -16,7 +16,7 @@
         end-placeholder="结束日期"
         :picker-options="workPickerData"
         @change="changeWorkUpdateTime">
-    </el-date-picker>  
+    </el-date-picker>   -->
     </view-header>
       <view-content>
       <el-tabs v-model="activeMenu">
@@ -38,6 +38,7 @@
 import DeviceDetailCheck from './device-detail-check/index.vue'
 import DeviceDetailInfo from './device-detail-info/index.vue'
 import DeviceDetailMiss from './device-detail-miss/index.vue'
+import { convertTimestamp } from 'shared@/utils/common.js'
 
 export default {
   components: {
@@ -48,6 +49,7 @@ export default {
   data () {
     return {
       activeMenu: 'base-info',
+      updateTime: '',
       workPickerData: {
          shortcuts: [{
           text: '最近一周',

@@ -5,15 +5,31 @@
       :data="checkListData">
       <el-table-column type="index">
       </el-table-column>
-      <el-table-column prop="name" label="部件"></el-table-column>
-      <el-table-column prop="number" label="部件编号"></el-table-column>
+      <el-table-column prop="name" label="点检部件"></el-table-column>
       <el-table-column prop="element" label="点检要素"></el-table-column>
-      <el-table-column prop="norm" label="点检标准"></el-table-column>
-      <el-table-column prop="unit" label="单位"></el-table-column>
-      <el-table-column prop="method" label="点检方法"></el-table-column>
-      <el-table-column prop="special" label="可能劣化的部位"></el-table-column>
-      <el-table-column prop="checker" label="点检人员"></el-table-column>
-      <el-table-column prop="date" label="点检日期"></el-table-column>
+      <el-table-column label="点检标准">
+        <template slot-scope="scope">
+          <span>{{ scope.row.normType === '2' ? (scope.row.norm + scope.row.unit) : scope.row.normOptions }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="tool" label="点检工具"></el-table-column>
+      <el-table-column prop="method" label="点检方法"></el-table-column>  
+      <el-table-column prop="checkDate" label="点检日期">
+        <template slot-scope="scope">
+          <span>{{ scope.row.checkDate | formateDate }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column prop="checker" label="点检人员"></el-table-column>     
+      <el-table-column prop="state" label="工单状态">
+        <template slot-scope="scope">
+          <span>{{ scope.row.state ? '完成' : '未完成' }}</span>
+        </template>
+      </el-table-column>         
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button @click="handleView(scope.row)" type="text" size="small">查看</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </view-content>
 </template>
@@ -23,45 +39,32 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      checkListData: [
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          date: '一周'
-        },
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          date: '一周'
-        },        
-        {
-          name: '外壳',
-          number: '1234',
-          element: '温度',
-          unit: '摄氏度',
-          special: '外壳尾部',
-          norm: '35℃',
-          method: '用手摸',
-          checker: '小明',
-          date: '一周'
-        }
-      ]
+      checkListData: []
     }
   },
+  computed: {
+    ...mapState('device-data', [
+      'deviceData'
+    ])
+  },
   methods: {
+    handleView () {
 
+    },
+    fetchWorkExpired () {
+      this.$http({
+        method: 'get',
+        url: '/api/work/expired',
+        params: {
+          deviceId: this.deviceData.id
+        }
+      }).then((result) => {
+        this.checkListData = result.value
+      }) 
+    }
+  },
+  created () {
+    this.fetchWorkExpired()
   }
 }
 </script>

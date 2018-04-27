@@ -8,7 +8,7 @@
       show-checkbox
       highlight-current
       default-expand-all
-      :default-checked-keys="checkerId"
+      :default-checked-keys="checker"
       :filter-node-method="filterNode"
       ref="personDom">
     </el-tree> 
@@ -32,6 +32,7 @@ export default {
   data () {
     return {
       filterText: '',
+      checker: ['']
     }
   },
   computed: {
@@ -73,6 +74,11 @@ export default {
     },
     filterText(val) {
       this.$refs.personDom.filter(val);
+    }
+  },
+  created () {
+    if (this.$route.query.state === 'edit') {
+      this.checker = this.checkerId
     }
   }
 }

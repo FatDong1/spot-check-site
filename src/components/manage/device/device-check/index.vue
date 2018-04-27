@@ -1,7 +1,7 @@
 <template>
   <view-container>
     <view-header-flex :width="'35%'">
-      新增点检
+      {{ $route.query.state === 'edit' ? '修改点检' : '新增点检' }}
       <el-steps
         slot="right"
         :space="200"
@@ -133,7 +133,8 @@ export default {
       this.normData.normType = this.checkData.normType
       this.normData.normOptions = this.checkData.normOptions
 
-      this.methodData.method = this.checkData.tool
+      this.methodData.method = this.checkData.method
+      this.methodData.tool = this.checkData.tool      
       this.methodData.deviceState = this.checkData.deviceState
       
       this.cycleData.cycle = this.checkData.cycle
@@ -245,14 +246,18 @@ export default {
      */
     handleSubmit () {
       this.send++
+      let state = this.$route.query.state
+      let url = state === 'edit' ? '/api/check/update' : '/api/check'
+      let backName = state === 'edit'  ? 'device-detail' : 'device-list'
       this.$nextTick(() => {
         this.updateLoading(true)
         let result = Object.assign({}, this.pointData, this.normData, this.methodData, this.cycleData)
         result['checkerId'] = this.personData
         result['deviceId'] = this.deviceData.id
+        state === 'edit' ? result['id'] = this.checkData.id : ''
         this.$http({
           method: 'post',
-          url: '/api/check',
+          url: url,
           data: result
         }).then((result) => {
           this.$message({
@@ -261,12 +266,12 @@ export default {
           })
           this.updateLoading(false)          
           this.$router.push({
-            name: 'device-list'
+            name: backName
           })
-        }).catch(() => {
+        }).catch((err) => {
           this.$message({
             type: 'error',
-            message: '点检添加失败'
+            message: err.msg
           })
         })
       })
@@ -280,13 +285,13 @@ export default {
     }
   },
   created () {
-    // if (this.$route.query.state === 'edit') {
-    //   console.log('init................')
-    //   this.$nextTick(() => {
-    //     this.initData()
-    //   })
-    //   console.log(this.pointData, this.methodData, this.cycleData, this.normData)
-    // }
+    if (this.$route.query.state === 'edit') {
+      console.log('init................')
+      // this.$nextTick(() => {
+        this.initData()
+      // })
+      console.log(this.pointData, this.methodData, this.cycleData, this.normData)
+    }
   }
 }
 </script>

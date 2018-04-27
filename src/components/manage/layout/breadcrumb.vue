@@ -105,6 +105,11 @@ export default {
           break
         case 'device-check':
           this.searchShow = false
+          if (this.$route.query.state === 'edit') {
+            breadcrumbConfig['device-check'].title = '修改点检'
+          } else {
+            breadcrumbConfig['device-check'].title = '新增点检'
+          }
           this.changeBreadcrumbOptions('home', 'device', 'device-check')
           break
         case 'score-list':
