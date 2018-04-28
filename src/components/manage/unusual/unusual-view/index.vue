@@ -1,6 +1,6 @@
 <template>
   <view-container>
-    <view-header>工单查看</view-header>
+    <view-header>异常查看</view-header>
     <info-detail>
       <row-layout :column="2">
         <info-detail-item
@@ -107,6 +107,27 @@
           {{ workData.method }}
         </info-detail-item>
       </row-layout>
+      <row-layout :column="column">
+        <info-detail-item
+          slot="left"
+          :label-width="labelWidth"
+          label="点检结果">
+          {{ workData.result }}
+        </info-detail-item>
+        <info-detail-item
+          slot="right"
+          :label-width="labelWidth"
+          label="解决状态">
+          {{ workData.isProblem === 0 ? '未解决' : '已解决' }}
+        </info-detail-item>
+      </row-layout>
+      <row-layout :column="1">
+        <info-detail-item
+          :label-width="labelWidth"
+          label="点检发现的问题">
+          {{ workData.problem }}
+        </info-detail-item>
+      </row-layout>
       <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
@@ -115,12 +136,12 @@
         </info-detail-item>
       </row-layout>
     </info-detail>
-    <tool-bar v-if="!workData.state">
+    <tool-bar v-if="workData.isProblem === 0">
       <div slot="right">
         <el-button
         slot="right"
         type="primary"
-        @click="saveWork">录入</el-button>
+        @click="saveWork">前往解决</el-button>
       </div>
     </tool-bar>
   </view-container>
@@ -157,12 +178,12 @@ export default {
     },
     saveWork () {
       this.$router.push({
-        name: 'work-edit'
+        name: 'unusual-edit'
       })
     }
   },
   computed: {
-    ...mapState('work-data', [
+    ...mapState('unusual-data', [
       'workData'
     ])
   },

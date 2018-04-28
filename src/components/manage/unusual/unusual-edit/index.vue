@@ -1,6 +1,6 @@
 <template>
   <view-container>
-    <view-header>工单查看</view-header>
+    <view-header>解决异常</view-header>
     <info-detail>
       <row-layout :column="2">
         <info-detail-item
@@ -107,6 +107,48 @@
           {{ workData.method }}
         </info-detail-item>
       </row-layout>
+      <row-layout :column="column">
+        <info-detail-item
+          slot="left"
+          :label-width="labelWidth"
+          label="点检结果">
+          {{ workData.result }}
+        </info-detail-item>
+        <info-detail-item
+          slot="right"
+          :label-width="labelWidth"
+          label="解决状态">
+          {{ workData.isProblem === 0 ? '未解决' : '已解决' }}
+        </info-detail-item>
+      </row-layout>
+      <row-layout :column="1">
+        <info-detail-item
+          :label-width="labelWidth"
+          label="点检发现的问题">
+          {{ workData.problem }}
+        </info-detail-item>
+      </row-layout>
+      <row-layout :column="1">
+        <info-detail-item
+          :label-width="labelWidth"
+          label="问题出现的原因">
+          <span v-if="workData.reason">{{ workData.reason }}</span>
+         <el-input v-else v-model="reason" placeholder="请输入问题出现的原因"></el-input>
+        </info-detail-item>
+      </row-layout>
+      <row-layout :column="1">
+        <info-detail-item
+          :label-width="labelWidth"
+          label="解决方法">
+          <span v-if="workData.solution">{{ workData.solution }}</span>
+          <el-input   
+            v-else         
+            type="textarea"
+            :rows="2"
+            placeholder="请输入解决当前异常的方法或者简单维修步骤" 
+            v-model="solution"></el-input>
+        </info-detail-item>
+      </row-layout>
       <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
@@ -114,13 +156,14 @@
           <div class="echart-dom" ref="deviceFuture"></div>
         </info-detail-item>
       </row-layout>
+      </row-layout>
     </info-detail>
-    <tool-bar v-if="!workData.state">
+    <tool-bar v-if="workData.isProblem === 0">
       <div slot="right">
         <el-button
         slot="right"
         type="primary"
-        @click="saveWork">录入</el-button>
+        @click="saveWork">提交</el-button>
       </div>
     </tool-bar>
   </view-container>
@@ -140,14 +183,23 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      problem: '',
+      isProblem: '',
+      result: '',
+      options: [],
       column: 2,
       labelWidth: '120px',
       loading: false,
+      reason: '',
+      solution: '',
       echartsDom: null,
       echartOptions: Object.assign({}, chartOptions),
     }
   },
   methods: {
+    ...mapMutations('unusual-data', [
+      'updatePartData'
+    ]),
     // 初始化图表
     initChart () {
       this.echartsDom = echarts.init(this.$refs.deviceFuture)
@@ -156,15 +208,39 @@ export default {
       })
     },
     saveWork () {
-      this.$router.push({
-        name: 'work-edit'
+      let obj = {
+        id: this.workData.workId,
+        reason: this.reason,
+        solution: this.solution,
+        isProblem: 2
+      }
+      this.$http({
+        method: 'post',
+        url: '/api/work/solve',
+        data: obj
+      }).then((result) => {
+        this.updatePartData(obj)
+        this.$message({
+          type: 'success',
+          message: result.msg
+        })
+      }).catch((err) => {
+        this.$message({
+          type: 'error',
+          message: result.msg
+        })
       })
     }
   },
   computed: {
-    ...mapState('work-data', [
+    ...mapState('unusual-data', [
       'workData'
     ])
+  },
+  created () {
+    if (this.workData.normType === '1') {
+      this.options = this.workData.normOptions.split('，')
+    }
   },
   mounted () {
     this.initChart()

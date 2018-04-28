@@ -29,6 +29,10 @@ breadcrumbConfig['work'] = { to: '/work/list', title: '工单列表' }
 breadcrumbConfig['work-view'] = { to: '/work/view', title: '工单查看' }
 breadcrumbConfig['work-edit'] = { to: '/work/edit', title: '工单录入' }
 
+breadcrumbConfig['unusual'] = { to: '/unusual/list', title: '异常列表' }
+breadcrumbConfig['unusual-view'] = { to: '/unusual/view', title: '异常查看' }
+breadcrumbConfig['unusual-edit'] = { to: '/unusual/edit', title: '解决异常' }
+
 breadcrumbConfig['company'] = { to: '/company', title: '组织架构' }
 
 breadcrumbConfig['device'] = { to: '/device/list', title: '设备列表' }
@@ -84,6 +88,19 @@ export default {
         case 'work-edit':
           this.searchShow = false
           this.changeBreadcrumbOptions('home', 'work', 'work-edit')
+          break
+        case 'unusual-list':
+          this.searchShow = true
+          this.searchPlaceholder = '请输入设备名称'
+          this.changeBreadcrumbOptions('home', 'unusual')
+          break
+        case 'unusual-view':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'unusual', 'unusual-view')
+          break
+        case 'unusual-edit':
+          this.searchShow = false
+          this.changeBreadcrumbOptions('home', 'unusual', 'unusual-edit')
           break
         case 'device-list':
           this.searchShow = true

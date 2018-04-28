@@ -11,6 +11,11 @@ import workList from '../components/manage/work/work-list/index.vue'
 import workEdit from '../components/manage/work/work-edit/index.vue'
 import workView from '../components/manage/work/work-view/index.vue'
 
+import unusualIndex from '../components/manage/unusual/unusual-index/index.vue'
+import unusualList from '../components/manage/unusual/unusual-list/index.vue'
+import unusualEdit from '../components/manage/unusual/unusual-edit/index.vue'
+import unusualView from '../components/manage/unusual/unusual-view/index.vue'
+
 import deviceIndex from '../components/manage/device/device-index/index.vue'
 import deviceList from '../components/manage/device/device-list/index.vue'
 import deviceCheck from '../components/manage/device/device-check/index.vue'
@@ -41,7 +46,7 @@ const router = new Router({
           name: 'home',
           component: home
         },
-        // 日常点检
+        // 工单列表
         {
           path: '/work',
           name: 'work',
@@ -59,6 +64,25 @@ const router = new Router({
             path: '/work/view',
             name: 'work-view',
             component: workView
+          }]
+        },
+        {
+          path: '/unusual',
+          name: 'unusual',
+          component: unusualIndex,
+          redirect: '/unusual/list',
+          children: [{
+            path: '/unusual/list',
+            name: 'unusual-list',
+            component: unusualList
+          }, {
+            path: '/unusual/edit',
+            name: 'unusual-edit',
+            component: unusualEdit
+          }, {
+            path: '/unusual/view',
+            name: 'unusual-view',
+            component: unusualView
           }]
         },
         // 设备管理
