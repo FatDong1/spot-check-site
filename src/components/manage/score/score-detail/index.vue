@@ -2,13 +2,6 @@
   <view-container>
     <view-header-flex>
       <span>{{ title }}</span>
-      <el-date-picker
-        slot="right"
-        v-model="assessDate"
-        type="date"
-        style="width: auto"
-        placeholder="选择日期">
-      </el-date-picker>
     </view-header-flex>
     <info-detail>
       <row-layout :column="2">
@@ -42,9 +35,8 @@
       <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
-          label="点检发现的问题">
-          {{ scoreData.questions }}
-        </info-detail-item>
+          label="点检发现的问题"
+          style="white-space: pre-line">{{ questions }}</info-detail-item>
       </row-layout>
       <row-layout :column="1">
         <info-detail-item
@@ -88,11 +80,11 @@ export default {
       column: 2,
       labelWidth: '120px',
       loading: false,
-      assessDate: '',
       ifShowEdit: false,
       radio: '1',
       textarea: '',
       echartsDom: null,
+      questions: '',
       echartOptions: Object.assign({}, chartOptions),
     }
   },
@@ -112,6 +104,29 @@ export default {
     },
     closeDialog () {
       this.showDialog = false
+    },
+    transformProblem (value) {
+      let str = ''
+      value.forEach(function (element, index) {
+        let number = (index + 1) + '.'
+        str = str + number + element.problem +'\n'
+      })
+      if (value.length === 0) {
+        str = '暂无在点检时发现问题'
+      }
+      return str
+    },
+    fetchProblem () {
+      this.$http({
+        method: 'get',
+        url: '/api/work/problem',
+        params: {
+          checkerId: this.scoreData.id
+        }
+      }).then((result) => {
+        console.log(result)
+        this.questions = this.transformProblem(result.value)
+      })
     }
   },
   computed: {
@@ -121,6 +136,9 @@ export default {
     title () {
       return this.scoreData.name  + '点检绩效表'
     }
+  },
+  created () {
+    this.fetchProblem()
   },
   mounted () {
     this.initChart()

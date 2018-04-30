@@ -5,7 +5,7 @@
         <span>{{ scoreData.name }}</span>
       </el-form-item>
       <el-form-item label="性别：">
-        <span>{{ scoreData.sex }}</span>
+        <span>{{ scoreData.sex === 1 ? '男' : '女' }}</span>
       </el-form-item>
       <el-form-item label="职位：">
         <span>{{ scoreData.job }}</span>

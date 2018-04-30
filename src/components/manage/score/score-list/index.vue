@@ -18,6 +18,7 @@
     <view-content>
       <el-table
         stripe
+        v-loading="isLoading"
         :data="listData">
         <el-table-column type="index">
         </el-table-column>
@@ -64,32 +65,8 @@ export default {
       pageTotal: null,
       currentPage: 1,
       department: [],
-      listData: [
-        {
-          name: '小明',
-          department: '第一工厂第一车间',
-          number: '001238',
-          job: '日常点检员',
-          score: '98',
-          decideDate: '2018年3月'
-        },
-        {
-          name: '小明',
-          department: '第一工厂第一车间',
-          number: '001238',
-          job: '日常点检员',
-          score: '98',
-          decideDate: '2018年3月'          
-        },        
-        {
-          name: '小明',
-          department: '第一工厂第一车间',
-          number: '001238',
-          job: '日常点检员',
-          score: '98',
-          decideDate: '2018年3月'          
-        }
-      ]
+      isLoading: false,
+      listData: []
     }
   },
   computed: {
@@ -120,7 +97,7 @@ export default {
       })
     },
     fetchPageUser (obj) {
-      this.loading = true
+      this.isLoading = true
       this.$http({
         method: 'get',
         url: '/api/users/page',
@@ -132,7 +109,7 @@ export default {
         }
       }).then((result) => {
         this.listData = result.value      
-        this.loading = false
+        this.isLoading = false
       })
     },
     handleView (row) {

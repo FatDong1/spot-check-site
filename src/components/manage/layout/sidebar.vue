@@ -37,7 +37,7 @@
     </el-menu-item>
     <el-menu-item index="/about">
       <i class="el-icon-news"></i>
-      <span>关于我们</span>
+      <span>公司介绍</span>
     </el-menu-item>
   </el-menu>
 </template>

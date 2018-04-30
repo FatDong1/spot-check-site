@@ -8,10 +8,10 @@
       <el-form-item label="账户" prop="account">
         <span>{{accountForm.account}}</span>
       </el-form-item>
-      <el-form-item label="所属工厂" prop="factory">
+      <el-form-item label="所属工厂" prop="factory" v-if="!isAdmin">
         <span>{{accountForm.factory}}</span>
       </el-form-item>
-      <el-form-item label="所属车间" prop="plant">
+      <el-form-item label="所属车间" prop="plant" v-if="!isAdmin">
         <span>{{accountForm.plant}}</span>
       </el-form-item>
       <el-form-item label="新密码" prop="pass">
@@ -68,6 +68,12 @@ export default {
           { validator: validatePass2, trigger: 'blur' }
         ]
       }
+    }
+  },
+  computed: {
+    isAdmin () {
+      let obj = JSON.parse(sessionStorage.getItem('user'))
+      return obj.isAdmin
     }
   },
   methods: {
