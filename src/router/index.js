@@ -18,8 +18,9 @@ import unusualView from '../components/manage/unusual/unusual-view/index.vue'
 
 import deviceIndex from '../components/manage/device/device-index/index.vue'
 import deviceList from '../components/manage/device/device-list/index.vue'
-import deviceCheck from '../components/manage/device/device-check/index.vue'
 import deviceAdd from '../components/manage/device/device-add/index.vue'
+import deviceCheckList from '../components/manage/device/check-list/index.vue'
+import deviceCheckAdd from '../components/manage/device/device-check/index.vue'
 import deviceDetail from '../components/manage/device/device-detail/index.vue'
 import deviceCheckDetail from '../components/manage/device/device-detail/device-detail-check/check-detail.vue'
 
@@ -96,9 +97,9 @@ const router = new Router({
             name: 'device-list',
             component: deviceList,
           }, {
-            path: '/device/check',
-            name: 'device-check',
-            component: deviceCheck
+            path: '/device/check/add',
+            name: 'device-check-add',
+            component: deviceCheckAdd
           }, {
             path: '/device/add',
             name: 'device-add',
@@ -107,6 +108,10 @@ const router = new Router({
             path: '/device/detail',
             name: 'device-detail',
             component: deviceDetail
+          }, {
+            path: '/device/check/list',
+            name: 'device-check-list',
+            component: deviceCheckList
           }, {
             path: '/device/detail/check',
             name: 'device-detail-check',

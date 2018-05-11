@@ -111,7 +111,7 @@ export default {
     addCheck (row) {
       this.updateDeviceData(row)
       this.$router.push({
-        name: 'device-check'
+        name: 'device-check-list'
       })
     },
     addDevice () {

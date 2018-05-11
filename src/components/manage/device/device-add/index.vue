@@ -35,6 +35,11 @@
         </el-form-item>
       </row-layout>
       <row-layout :span="16">
+        <el-form-item prop="parts" label="设备部件">
+          <el-input v-model="deviceFormData.parts" :disabled="disabled" placeholder="部件名称使用逗号隔开"></el-input>
+        </el-form-item>
+      </row-layout>
+      <row-layout :span="16">
         <!-- 备注 -->
         <el-form-item prop="remark" label="备注">
           <el-input type="textarea" v-model="deviceFormData.remark" :min="3" :disabled="disabled"></el-input>
@@ -68,7 +73,8 @@ export default {
         serialNumber: '',
         usePlace: '',
         productionAddress: '',
-        remark: ''
+        remark: '',
+        parts: ''
       },
       departmentOptions: [{
         value: '第一工厂',
