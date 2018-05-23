@@ -41,6 +41,12 @@
       <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
+          label="漏检的工单"
+          style="white-space: pre-line">{{ expiredWorks }}</info-detail-item>
+      </row-layout>
+      <row-layout :column="1">
+        <info-detail-item
+          :label-width="labelWidth"
           label="绩效图表">
           <div class="echart-dom" ref="scoreAnalysis"></div>
         </info-detail-item>
@@ -85,13 +91,19 @@ export default {
       textarea: '',
       echartsDom: null,
       questions: '',
+      expiredWorks: '',
       echartOptions: Object.assign({}, chartOptions),
     }
   },
   methods: {
     // 初始化图表
-    initChart () {
+    initChart (arr) {
       this.echartsDom = echarts.init(this.$refs.scoreAnalysis)
+      let year = new Date().getFullYear() + '年'
+      let name = this.scoreData.name
+      this.echartOptions.legend.data = [name + year + '点检绩效图']
+      this.echartOptions.series[0].name = name + year + '点检绩效图'
+      this.echartOptions.series[0].data = arr
       this.$nextTick(() => {
         this.echartsDom.setOption(this.echartOptions)
       })
@@ -102,8 +114,11 @@ export default {
     modifyScore () {
       this.showDialog = true      
     },
-    closeDialog () {
+    closeDialog (flag) {
       this.showDialog = false
+      if (flag) {
+        this.fetchScores()
+      }
     },
     transformProblem (value) {
       let str = ''
@@ -113,6 +128,22 @@ export default {
       })
       if (value.length === 0) {
         str = '暂无在点检时发现问题'
+      }
+      return str
+    },
+    transformWorks (value) {
+      let str = ''
+      value.forEach(function (element, index) {
+        let number = (index + 1) + '.'
+        let date = new Date(element.checkDate)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        let dateStr =  year + '年' + month +'月' + day + '日'
+        str = str + number + '未在' + dateStr + '使用' + element.tool + '检查' + element.deviceName + '的' + element.name + '的' + element.element  +'要素\n'
+      })
+      if (value.length === 0) {
+        str = '暂无有漏检情况'
       }
       return str
     },
@@ -127,6 +158,34 @@ export default {
         console.log(result)
         this.questions = this.transformProblem(result.value)
       })
+    },
+    fetchExpiredWorks () {
+      this.$http({
+        method: 'get',
+        url: '/api/work/expired/person',
+        params: {
+          checkerId: this.scoreData.id
+        }
+      }).then((result) => {
+        console.log('expired', result)
+        this.expiredWorks = this.transformWorks(result.value)
+      })
+    },
+    fetchScores () {
+      this.$http({
+        method: 'get',
+        url: '/api/score',
+        params: {
+          checkerId: this.scoreData.id
+        }
+      }).then((result) => {
+        let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        result.value.forEach((element) => {
+          let index = element.assessDate.slice(-2, -1) - 1
+          arr[index] = element.total
+        })
+        this.initChart(arr)
+      })
     }
   },
   computed: {
@@ -139,9 +198,10 @@ export default {
   },
   created () {
     this.fetchProblem()
+    this.fetchExpiredWorks()
   },
   mounted () {
-    this.initChart()
+    this.fetchScores()
   }
 }
 </script>

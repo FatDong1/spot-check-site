@@ -156,7 +156,8 @@ import 'echarts/lib/chart/sankey'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
 import echarts from 'echarts/lib/echarts'
-import chartOptions from 'shared@/echart/options/deviceFuture.js'
+import chartOptionsNum from 'shared@/echart/options/deviceFutureNum.js'
+import chartOptionsStr from 'shared@/echart/options/deviceFutureStr.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
@@ -165,15 +166,54 @@ export default {
       labelWidth: '120px',
       loading: false,
       echartsDom: null,
-      echartOptions: Object.assign({}, chartOptions),
+      echartOptionsNum: Object.assign({}, chartOptionsNum),
+      echartOptionsStr: Object.assign({}, chartOptionsStr),  
     }
   },
   methods: {
     // 初始化图表
-    initChart () {
+    initChart (result, echartOptions) {
+      let legend = result[0].deviceName + result[0].name +result[0].element + '趋势图'
+      let xArr = []
+      let yValue = []
+      let yArr = []
+      result.forEach((element) => {
+        let date = new Date(element.checkDate)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        let dateStr = year + '年' + month +'月' + day + '日'
+        xArr.push(dateStr)
+        yValue.push(element.result)
+      })
+      if (result[0].normType === '1') {
+        yArr = result[0].normOptions.split('，')
+        echartOptions.yAxis[0].data = yArr
+      } else {
+        echartOptions.yAxis[0].name = '（' + result[0].unit + '）'
+      }
+      echartOptions.legend.data = [legend]
+      echartOptions.series[0].name = legend
+      echartOptions.xAxis.data = xArr   
+      echartOptions.series[0].data = yValue
       this.echartsDom = echarts.init(this.$refs.deviceFuture)
       this.$nextTick(() => {
-        this.echartsDom.setOption(this.echartOptions)
+        this.echartsDom.setOption(echartOptions)
+      })
+    },
+    fecchAllWorks () {
+      this.$http({
+        method: 'get',
+        url: '/api/work/spot-check',
+        params: {
+          id: this.workData.spotCheckId
+        }
+      }).then((result) => {
+        if (result.value[0].normType === '2') {
+          this.initChart(result.value, chartOptionsNum)
+        } else {
+          this.initChart(result.value, chartOptionsStr)
+        }
       })
     },
     saveWork () {
@@ -188,7 +228,7 @@ export default {
     ])
   },
   mounted () {
-    this.initChart()
+    this.fecchAllWorks()
   }
 }
 </script>

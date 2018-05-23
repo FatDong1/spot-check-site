@@ -10,7 +10,7 @@
     </el-row>
     <el-row :gutter="20" class="second-row">
       <el-col :span="20">
-        <all-factory></all-factory>
+        <!-- <all-factory></all-factory> -->
       </el-col>
     </el-row>
   </div>
@@ -36,7 +36,7 @@ export default {
   },
   data () {
     return {
-      percent: 0
+      percent: 1
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
         if (total) {
           this.percent = (finish / total).toFixed(2) - 0
         } else {
-          this.percent = 0
+          this.percent = 1
         }
       })
     }

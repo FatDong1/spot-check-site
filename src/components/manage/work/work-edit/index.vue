@@ -156,13 +156,13 @@
             placeholder="请输入点检过程中发现的问题"></el-input>
         </info-detail-item>
       </row-layout>
-      <row-layout :column="1">
+       <!-- <row-layout :column="1">
         <info-detail-item
           :label-width="labelWidth"
           label="趋势图表">
           <div class="echart-dom" ref="deviceFuture"></div>
         </info-detail-item>
-      </row-layout>
+      </row-layout>  -->
     </info-detail>
     <tool-bar v-if="!workData.result">
       <div slot="right">
@@ -184,7 +184,7 @@ import 'echarts/lib/chart/sankey'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
 import echarts from 'echarts/lib/echarts'
-import chartOptions from 'shared@/echart/options/deviceFuture.js'
+import chartOptions from 'shared@/echart/options/deviceFutureNum.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data () {
@@ -247,7 +247,7 @@ export default {
     }
   },
   mounted () {
-    this.initChart()
+    // this.initChart()
   }
 }
 </script>

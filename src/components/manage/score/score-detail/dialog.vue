@@ -87,7 +87,7 @@ export default {
         url: '/api/score',
         data: result
       }).then((result) => {
-        this.$emit('closeScoreDialog')
+        this.$emit('closeScoreDialog', 1)
         this.$message({
           message: result.msg,
           type: 'success'

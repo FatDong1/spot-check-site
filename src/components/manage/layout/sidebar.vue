@@ -11,23 +11,23 @@
       <i class="el-icon-menu"></i>
       <span>首页</span>
     </el-menu-item>
-    <el-menu-item index="/work?pageIndex=1">
+    <el-menu-item index="/work?pageIndex=1" v-if="!isAdmin">
       <i class="el-icon-tickets"></i>
       <span>工单录入</span>
     </el-menu-item>
-    <el-menu-item index="/device"  v-if="isAdmin">
+    <el-menu-item index="/device"  v-if="isAdmin === 1">
       <i class="el-icon-printer"></i>
       <span>设备管理</span>
     </el-menu-item>
-    <el-menu-item index="/unusual?pageIndex=1" v-if="isAdmin">
+    <el-menu-item index="/unusual?pageIndex=1" v-if="isAdmin === 2">
       <i class="el-icon-tickets"></i>
       <span>异常处理</span>
     </el-menu-item>
-    <el-menu-item index="/score?pageIndex=1" v-if="isAdmin">
+    <el-menu-item index="/score?pageIndex=1" v-if="isAdmin === 1">
       <i class="el-icon-news"></i>
       <span>绩效评分</span>
     </el-menu-item>
-    <el-menu-item index="/company" v-if="isAdmin">
+    <el-menu-item index="/company" v-if="isAdmin === 1">
       <i class="el-icon-setting"></i>
       <span>组织架构</span>
     </el-menu-item>

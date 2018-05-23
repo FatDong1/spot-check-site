@@ -16,15 +16,37 @@ export default {
   },
   methods: {
     // 初始化图表
-    initChart () {
+    initChart (arr) {
       this.echartsDom = echarts.init(this.$refs.echartQuestion)
+      this.echartOptions.series[0].data = arr
+      let year = new Date().getFullYear() + '年'
+      this.echartOptions.legend.data = [year + '点检发现的问题量']
+      this.echartOptions.series[0].name = year + '点检发现的问题量'
       this.$nextTick(() => {
         this.echartsDom.setOption(this.echartOptions)
+      })
+    },
+    fetchNumber () {
+      let user = JSON.parse(sessionStorage.getItem('user'))
+      this.$http({
+        method: 'get',
+        url: '/api/work/number',
+        params: {
+          checkerId: user.id
+        }
+      }).then((result) => {
+        let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        result.value.forEach((element) => {
+          let date = new Date(element.checkDate)
+          let month = date.getMonth() + 1
+          arr[month] = arr[month] + 1
+        })
+        this.initChart(arr)
       })
     }
   },
   mounted () {
-    this.initChart()
+    this.fetchNumber()
   }
 }
 </script>
